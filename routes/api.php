@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,10 @@ Route::prefix('/v1')->group(function () {
     });
     Route::middleware(['api', 'jwt.verify'])->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
+        Route::prefix('/attendance')->controller(AttendanceController::class)->group(function () {
+            Route::post('/create', 'create');
+            Route::get('/showLogin', 'showLogin');
+            Route::get('/checkStatus', 'checkStatus');
+        });
     });
 });

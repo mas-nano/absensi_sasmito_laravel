@@ -12,6 +12,34 @@
 
 namespace App\Models{
 /**
+ * App\Models\Attendance
+ *
+ * @property int $id
+ * @property string $lng
+ * @property string $lat
+ * @property string $type
+ * @property string $status
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereLat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereLng($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereUserId($value)
+ */
+	class Attendance extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Profile
  *
  * @property int $id
@@ -23,6 +51,7 @@ namespace App\Models{
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile query()
@@ -76,8 +105,11 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attendance> $attendaces
+ * @property-read int|null $attendaces_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \App\Models\Profile|null $profile
  * @property-read \App\Models\Role|null $role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
