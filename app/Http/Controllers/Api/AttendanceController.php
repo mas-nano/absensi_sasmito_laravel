@@ -31,7 +31,7 @@ class AttendanceController extends Controller
 
     public function checkStatus(Request $request): JsonResponse
     {
-        $attendances = Attendance::where('user_id', $request->user()->id)->whereDate('created_at',  Carbon::now()->toDateString())->latest()->get();
+        $attendances = Attendance::where('user_id', $request->user()->id)->whereDate('created_at',  Carbon::now('GMT+7')->toDateString())->latest()->get();
         $data = collect();
         if (count($attendances) == 0 || $attendances[0]->type == 'out') {
             $data->put('canCheckIn', true);
@@ -55,8 +55,13 @@ class AttendanceController extends Controller
             return $this->responseValidation($validator->errors());
         }
 
+
         $validated = $validator->validated();
-        $lastAttendance = Attendance::latest()->first();
+
+        if ($this->calculateDistance($validated['lat'], $validated['lng'], 0, 0) >= 20) {
+            return $this->responseError('Lokasi terlalu jauh dengan kantor', 403);
+        }
+        $lastAttendance = Attendance::where('user_id', auth()->user()->getAuthIdentifier())->whereDate('created_at', Carbon::now('GMT+7')->toDateString())->latest()->first();
 
         $attendace = new Attendance();
         $attendace->lng = $validated['lng'];
@@ -87,5 +92,21 @@ class AttendanceController extends Controller
         $attendace->save();
 
         return $this->responseSuccess("Attendance successfully");
+    }
+
+    private function calculateDistance($lattitudeForm, $longitudeForm, $lattitudeTo, $longitudeTo): float
+    {
+        $latFrom = deg2rad($lattitudeForm);
+        $lonFrom = deg2rad($longitudeForm);
+        $latTo = deg2rad(-7.335698546550092);
+        $lonTo = deg2rad(112.64084919558722);
+
+        $lonDelta = $lonTo - $lonFrom;
+        $a = pow(cos($latTo) * sin($lonDelta), 2) +
+            pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($lonDelta), 2);
+        $b = sin($latFrom) * sin($latTo) + cos($latFrom) * cos($latTo) * cos($lonDelta);
+
+        $angle = atan2(sqrt($a), $b);
+        return $angle * 6371000;
     }
 }

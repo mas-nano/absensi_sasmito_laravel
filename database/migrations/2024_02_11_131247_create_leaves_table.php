@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('leaves', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('first_title')->nullable();
-            $table->string('name')->nullable();
-            $table->string('last_title')->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('address')->nullable();
-            $table->string('profile_picture')->nullable();
+            $table->date('start_date');
+            $table->date('to_date');
+            $table->integer('status');
+            $table->text('reason');
+            $table->string('type');
+            $table->string('title');
+            $table->string('photo')->nullable();
+            $table->foreignId('approved_by')->nullable()->constrained()->references('id')->on('users')->nullOnDelete();
             $table->foreignId('user_id')->constrained()->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('leaves');
     }
 };

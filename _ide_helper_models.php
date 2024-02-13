@@ -15,6 +15,7 @@ namespace App\Models{
  * App\Models\Attendance
  *
  * @property int $id
+ * @property string $uuid
  * @property string $lng
  * @property string $lat
  * @property string $type
@@ -34,6 +35,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereUuid($value)
  */
 	class Attendance extends \Eloquent {}
 }
@@ -44,7 +46,9 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $uuid
+ * @property string $first_title
  * @property string $name
+ * @property string $last_title
  * @property string $phone_number
  * @property string $address
  * @property string $profile_picture
@@ -57,7 +61,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Profile query()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Profile whereFirstTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Profile whereLastTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile wherePhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereProfilePicture($value)

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,10 @@ Route::prefix('/v1')->group(function () {
             Route::post('/create', 'create');
             Route::get('/showLogin', 'showLogin');
             Route::get('/checkStatus', 'checkStatus');
+        });
+        Route::prefix('/users')->controller(UserController::class)->group(function () {
+            Route::post('/updateMe', 'updateMe');
+            Route::post('/update-profile-picture', 'updateProfilePicture');
         });
     });
 });
