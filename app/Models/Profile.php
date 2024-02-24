@@ -11,6 +11,8 @@ class Profile extends Model
 {
     use HasFactory, Uuid;
 
+    protected $guarded = ['id'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

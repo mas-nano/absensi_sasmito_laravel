@@ -52,7 +52,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Role::class, 'role_id');
     }
 
-    public function attendaces(): HasMany
+    public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class, 'user_id');
     }
@@ -60,6 +60,16 @@ class User extends Authenticatable implements JWTSubject
     public function profile(): HasOne
     {
         return $this->hasOne(Profile::class, 'user_id');
+    }
+
+    public function leaves(): HasMany
+    {
+        return $this->hasMany(Leave::class, 'user_id');
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
     public function getJWTIdentifier()

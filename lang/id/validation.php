@@ -30,6 +30,7 @@ return [
     ],
     'boolean'        => ':attribute harus bernilai true atau false',
     'confirmed'      => 'Konfirmasi :attribute tidak cocok.',
+    'csv'            => ':attribute harus berupa file CSV.',
     'date'           => ':attribute bukan tanggal yang valid.',
     'date_equals'    => ':attribute harus berisi tanggal yang sama dengan :date.',
     'date_format'    => ':attribute tidak cocok dengan format :format.',

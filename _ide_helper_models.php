@@ -23,6 +23,8 @@ namespace App\Models{
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $project_id
+ * @property-read \App\Models\Project|null $project
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance newQuery()
@@ -31,6 +33,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereLat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereLng($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereUpdatedAt($value)
@@ -42,16 +45,57 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Leave
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property string $start_date
+ * @property string $to_date
+ * @property int $status
+ * @property string $reason
+ * @property string $type
+ * @property string $title
+ * @property string|null $photo
+ * @property int|null $approved_by
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $project_id
+ * @property-read \App\Models\Project|null $project
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereApprovedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave wherePhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereToDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leave whereUuid($value)
+ */
+	class Leave extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Profile
  *
  * @property int $id
  * @property string $uuid
- * @property string $first_title
- * @property string $name
- * @property string $last_title
- * @property string $phone_number
- * @property string $address
- * @property string $profile_picture
+ * @property string|null $first_title
+ * @property string|null $name
+ * @property string|null $last_title
+ * @property string|null $phone_number
+ * @property string|null $address
+ * @property string|null $profile_picture
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -72,6 +116,41 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereUuid($value)
  */
 	class Profile extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Project
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property string $name
+ * @property string $address
+ * @property string $lat
+ * @property string $lng
+ * @property string|null $photo
+ * @property string|null $check_in_time
+ * @property string|null $check_out_time
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereCheckInTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereCheckOutTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereLat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereLng($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project wherePhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereUuid($value)
+ */
+	class Project extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -111,11 +190,15 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attendance> $attendaces
- * @property-read int|null $attendaces_count
+ * @property int|null $project_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attendance> $attendances
+ * @property-read int|null $attendances_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Leave> $leaves
+ * @property-read int|null $leaves_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \App\Models\Profile|null $profile
+ * @property-read \App\Models\Project|null $project
  * @property-read \App\Models\Role|null $role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
@@ -129,6 +212,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)

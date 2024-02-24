@@ -15,4 +15,9 @@ class Attendance extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
 }
