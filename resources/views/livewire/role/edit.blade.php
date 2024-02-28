@@ -1,24 +1,24 @@
-<x-slot:breadcrumbs>
-    <li class="flex items-center space-x-1">
-        <a href="/" wire:navigate
-            class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Home</a>
-    </li>
-    <li class="flex items-center space-x-1">
-        <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
-        <a href="{{ route('role.index') }}" wire:navigate
-            class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Role</a>
-    </li>
-    <li class="flex items-center space-x-1">
-        <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
-        <span class="px-1 py-2 text-black dark:text-white text-sm">Role {{ $role->name }}</span>
-    </li>
-</x-slot:breadcrumbs>
-
 <x-slot:title>
     Role {{ $role->name }}
 </x-slot:title>
 
-<div>
+<x-page-layout>
+    <x-slot:breadcrumbs>
+        <li class="flex items-center space-x-1">
+            <a href="/" wire:navigate
+                class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Home</a>
+        </li>
+        <li class="flex items-center space-x-1">
+            <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
+            <a href="{{ route('role.index') }}" wire:navigate
+                class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Role</a>
+        </li>
+        <li class="flex items-center space-x-1">
+            <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
+            <span class="px-1 py-2 text-black dark:text-white text-sm">Role {{ $role->name }}</span>
+        </li>
+    </x-slot:breadcrumbs>
+
     <div class="flex justify-between items-center">
         <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Role</p>
         <button class="py-1 px-2 bg-black dark:bg-[#a4a5f7] text-xs text-white dark:text-black rounded-lg"
@@ -60,4 +60,4 @@
             </tbody>
         </table>
     </div>
-</div>
+</x-page-layout>

@@ -1,5 +1,5 @@
 <x-slot:title>
-    Role
+    Jabatan
 </x-slot:title>
 
 <x-page-layout>
@@ -10,12 +10,15 @@
         </li>
         <li class="flex items-center space-x-1">
             <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
-            <span class="px-1 py-2 text-black dark:text-white text-sm">Role</span>
+            <span class="px-1 py-2 text-black dark:text-white text-sm">Jabatan</span>
         </li>
     </x-slot:breadcrumbs>
 
     <div class="flex justify-between items-center">
-        <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Role</p>
+        <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Jabatan</p>
+        <button class="py-1 px-2 bg-black dark:bg-[#a4a5f7] text-xs text-white dark:text-black rounded-lg"
+            wire:click="$dispatch('openModal', {component:'position.create'})">Tambah
+            Jabatan</button>
     </div>
     <div class="mt-5 dark:bg-[#FFFFFF0D] bg-[#F7F9FB] rounded-2xl p-6">
         <div class="flex justify-end">
@@ -26,21 +29,24 @@
         <table class="w-full">
             <thead>
                 <tr
-                    class="text-left border-b-[1px] dark:border-b-[#FFFFFF33] border-b-[#1C1C1C33] text-[#1C1C1C66] dark:text-[#FFFFFF66] text-xs ">
+                    class="text-left border-b-[1px] dark:border-b-[#FFFFFF33] border-b-[#1C1C1C33] text-[#1C1C1C66] dark:text-[#FFFFFF66] text-xs">
                     <th class="py-3 font-normal ">No.</th>
                     <th class="py-3 font-normal ">Nama</th>
                     <th class="py-3 font-normal ">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($roles as $item)
+                @forelse ($positions as $item)
                     <tr class="text-black dark:text-white text-xs">
                         <td class="py-3 font-normal">{{ $loop->iteration }}</td>
                         <td class="py-3 font-normal">{{ $item->name }}</td>
                         <td class="py-3 flex space-x-2">
-                            <a href="{{ route('role.edit', $item->uuid) }}" wire:navigate><i
-                                    class="ph-duotone ph-pencil-simple text-yellow-500 text-lg"></i></a>
-                            <button><i class="ph-duotone ph-trash text-red-500 text-lg"></i></button>
+                            <button
+                                wire:click="$dispatch('openModal', {component:'position.edit', arguments:{position:{{ $item->id }}}})"><i
+                                    class="ph-duotone ph-pencil-simple text-yellow-500 text-lg"></i></button>
+                            <button
+                                wire:click="$dispatch('openModal', {component:'position.delete', arguments:{position:{{ $item->id }}}})"><i
+                                    class="ph-duotone ph-trash text-red-500 text-lg"></i></button>
                         </td>
                     </tr>
                 @empty

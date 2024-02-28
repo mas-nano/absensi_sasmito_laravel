@@ -1,29 +1,27 @@
-<x-slot:breadcrumbs>
-    <li class="flex items-center space-x-1">
-        <a href="/" wire:navigate
-            class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Home</a>
-    </li>
-    <li class="flex items-center space-x-1">
-        <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
-        <a href="{{ route('project.index') }}" wire:navigate
-            class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Proyek</a>
-    </li>
-    <li class="flex items-center space-x-1">
-        <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
-        <span class="px-1 py-2 text-black dark:text-white text-sm">Detail Proyek</span>
-    </li>
-</x-slot:breadcrumbs>
-
 <x-slot:title>
     Detail Proyek
 </x-slot:title>
 
-<div class="">
-    <form wire:submit="save">
+<x-page-layout class="">
+    <x-slot:breadcrumbs>
+        <li class="flex items-center space-x-1">
+            <a href="/" wire:navigate
+                class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Home</a>
+        </li>
+        <li class="flex items-center space-x-1">
+            <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
+            <a href="{{ route('project.index') }}" wire:navigate
+                class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Proyek</a>
+        </li>
+        <li class="flex items-center space-x-1">
+            <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
+            <span class="px-1 py-2 text-black dark:text-white text-sm">Detail Proyek</span>
+        </li>
+    </x-slot:breadcrumbs>
+
+    <div>
         <div class="flex justify-between items-center">
-            <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Tambah Proyek</p>
-            <button type="submit"
-                class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg">Simpan</button>
+            <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Detail Proyek</p>
         </div>
         <div class="mt-5 w-full grid grid-cols-4 p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#F7F9FB] gap-6">
             <div class="">
@@ -80,9 +78,9 @@
                 </div>
             </div>
         </div>
-    </form>
+    </div>
     <livewire:project.table-employee :project="$project" />
-</div>
+</x-page-layout>
 
 @assets
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"

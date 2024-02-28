@@ -35,6 +35,11 @@ class AuthController extends Controller
         if (!$token) {
             return $this->responseError('Email atau password Anda salah', 401);
         }
+
+        if ((Auth::user()->role_id == null || Auth::user()->role_id == 1) && Auth::user()->project_id == null) {
+            Auth::logout();
+            return $this->responseError('Tidak bisa login. Hubungi admin untuk mengatur proyek dan role', 401);
+        }
         $user = User::with('role')->find(Auth::user()->getAuthIdentifier());
         $user->setAttribute('accessToken', $token);
         $user->setAttribute('type', 'Bearer');

@@ -1,25 +1,25 @@
-<x-slot:breadcrumbs>
-    <li class="flex items-center space-x-1">
-        <a href="/" wire:navigate
-            class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Home</a>
-    </li>
-    <li class="flex items-center space-x-1">
-        <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
-        <a href="{{ route('project.index') }}" wire:navigate
-            class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Proyek</a>
-    </li>
-    <li class="flex items-center space-x-1">
-        <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
-        <span class="px-1 py-2 text-black dark:text-white text-sm">Ubah Proyek</span>
-    </li>
-</x-slot:breadcrumbs>
-
 <x-slot:title>
     Ubah Proyek
 </x-slot:title>
 
 
-<div class="">
+<x-page-layout class="">
+    <x-slot:breadcrumbs>
+        <li class="flex items-center space-x-1">
+            <a href="/" wire:navigate
+                class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Home</a>
+        </li>
+        <li class="flex items-center space-x-1">
+            <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
+            <a href="{{ route('project.index') }}" wire:navigate
+                class="px-1 py-2 hover:underline text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">Proyek</a>
+        </li>
+        <li class="flex items-center space-x-1">
+            <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
+            <span class="px-1 py-2 text-black dark:text-white text-sm">Ubah Proyek</span>
+        </li>
+    </x-slot:breadcrumbs>
+
     <form wire:submit="save">
         <div class="flex justify-between items-center">
             <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Tambah Proyek</p>
@@ -96,7 +96,7 @@
         </div>
     </form>
     <livewire:project.table-employee :project="$project" />
-</div>
+</x-page-layout>
 
 @assets
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"

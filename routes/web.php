@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('guest:web')->group(function () {
-    Route::get('/', Login::class);
+    Route::get('/', Login::class)->name('login');
 });
 Route::middleware('auth:web')->group(function () {
-    Route::get('/dashboard', Dashboard::class);
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::prefix('/employee')->name('employee.')->group(function () {
         Route::get('/', App\Livewire\Employee\Index::class)->name('index');
         Route::get('/create', App\Livewire\Employee\Create::class)->name('create');
@@ -40,4 +40,6 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/', 'Index')->name('index');
         Route::get('/{project:uuid}', 'Show')->name('show');
     });
+    Route::get('/setting', App\Livewire\Setting\Index::class)->name('setting.index');
+    Route::get('/position', App\Livewire\Position\Index::class)->name('position.index');
 });

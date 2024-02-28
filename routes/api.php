@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LeaveController;
+use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,12 @@ Route::prefix('/v1')->group(function () {
         Route::prefix('/leaves')->controller(LeaveController::class)->group(function () {
             Route::get('/get-single-list', 'getSingleList');
             Route::post('/create', 'create');
+        });
+        Route::prefix('/project')->controller(ProjectController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{project}/users', 'getUsers');
+            Route::get('/{project}/list-attendance', 'listAttendance');
+            Route::get('/{user}/self-report', 'selfReport');
         });
     });
 });

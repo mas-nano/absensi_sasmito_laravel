@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
+use App\Models\Project;
 use App\Models\User;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -55,10 +57,11 @@ class AttendanceController extends Controller
             return $this->responseValidation($validator->errors());
         }
 
-
         $validated = $validator->validated();
 
-        if ($this->calculateDistance($validated['lat'], $validated['lng'], 0, 0) >= 20) {
+        $project = Project::find(Auth::user()->project_id);
+
+        if ($this->calculateDistance($validated['lat'], $validated['lng'], $project->lat, $project->lng) >= 20) {
             return $this->responseError('Lokasi terlalu jauh dengan kantor', 403);
         }
         $lastAttendance = Attendance::where('user_id', auth()->user()->getAuthIdentifier())->whereDate('created_at', Carbon::now('GMT+7')->toDateString())->latest()->first();
@@ -89,6 +92,7 @@ class AttendanceController extends Controller
         //     }
         // }
         $attendace->user_id = $request->user()->id;
+        $attendace->project_id = $request->user()->project_id;
         $attendace->save();
 
         return $this->responseSuccess("Attendance successfully");
@@ -98,8 +102,8 @@ class AttendanceController extends Controller
     {
         $latFrom = deg2rad($lattitudeForm);
         $lonFrom = deg2rad($longitudeForm);
-        $latTo = deg2rad(-7.335698546550092);
-        $lonTo = deg2rad(112.64084919558722);
+        $latTo = deg2rad($lattitudeTo);
+        $lonTo = deg2rad($longitudeTo);
 
         $lonDelta = $lonTo - $lonFrom;
         $a = pow(cos($latTo) * sin($lonDelta), 2) +

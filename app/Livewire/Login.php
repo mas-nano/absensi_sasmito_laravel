@@ -29,6 +29,11 @@ class Login extends Component
         $validated = $this->validate();
 
         if (Auth::guard('web')->attempt($validated)) {
+            if (Auth::guard('web')->user()->role_id !== 1) {
+                Auth::guard('web')->logout();
+                Toaster::error('Gagal Login!');
+                return;
+            }
             return $this->redirectIntended('/dashboard', true);
         }
         Toaster::error('Email atau password Anda salah');
