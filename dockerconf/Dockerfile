@@ -56,7 +56,11 @@ RUN docker-php-ext-install opcache
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
-# Install newrelic
+# Install Node
+RUN curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh
+RUN bash /tmp/nodesource_setup.sh
+
+RUN apt install nodejs
 
 # Add user for laravel application
 RUN groupadd -g 1000 www

@@ -72,6 +72,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Project::class, 'project_id');
     }
 
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class, 'position_id');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

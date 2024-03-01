@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Project;
 
+use App\Models\Project;
 use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -9,7 +10,7 @@ use Masmerise\Toaster\Toaster;
 
 class TableEmployee extends Component
 {
-    public $project;
+    public $project_id;
 
     #[On('refresh-list-employee-project')]
     public function refresh()
@@ -18,13 +19,13 @@ class TableEmployee extends Component
 
     public function mount($project)
     {
-        $this->project = $project;
+        $this->project_id = $project->id;
     }
 
     public function render()
     {
         return view('livewire.project.table-employee', [
-            'users' => $this->project->users
+            'project' => Project::with('users.profile', 'users.role')->where('id', $this->project_id)->first()
         ]);
     }
 

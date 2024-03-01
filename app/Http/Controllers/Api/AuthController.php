@@ -40,7 +40,7 @@ class AuthController extends Controller
             Auth::logout();
             return $this->responseError('Tidak bisa login. Hubungi admin untuk mengatur proyek dan role', 401);
         }
-        $user = User::with('role')->find(Auth::user()->getAuthIdentifier());
+        $user = User::with('role', 'position')->find(Auth::user()->getAuthIdentifier());
         $user->setAttribute('accessToken', $token);
         $user->setAttribute('type', 'Bearer');
         return $this->responseSuccessWithData('Login successfully', $user);
@@ -64,6 +64,6 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
-        return $this->responseSuccessWithData('User found', $request->user()->load('role', 'profile'));
+        return $this->responseSuccessWithData('User found', $request->user()->load('role', 'profile', 'position', 'project'));
     }
 }

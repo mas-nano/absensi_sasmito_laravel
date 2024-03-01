@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($users as $item)
+            @forelse ($project->users as $item)
                 <tr class="text-black dark:text-white text-xs">
                     <td class="py-3 font-normal">{{ $loop->iteration }}</td>
                     <td class="py-3 font-normal">{{ $item->profile->first_title }} {{ $item->profile->name }}

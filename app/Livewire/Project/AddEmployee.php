@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Project;
 
+use App\Models\Position;
 use App\Models\Profile;
 use App\Models\Role;
 use App\Models\User;
@@ -19,6 +20,9 @@ class AddEmployee extends ModalComponent
     #[Validate('required', as: 'Jenis Pegawai')]
     public $role_id;
 
+    #[Validate('required|exists:positions,id', as: 'Jabatan')]
+    public $position_id;
+
     public function mount($project_id)
     {
         $this->project_id = $project_id;
@@ -28,9 +32,11 @@ class AddEmployee extends ModalComponent
     {
         $profiles = Profile::with('user')->get();
         $roles = Role::all();
+        $positions = Position::all();
         return view('livewire.project.add-employee', [
             'profiles' => $profiles,
-            'roles' => $roles
+            'roles' => $roles,
+            'positions' => $positions
         ]);
     }
 
@@ -46,6 +52,7 @@ class AddEmployee extends ModalComponent
 
         $user->project_id = $this->project_id;
         $user->role_id = $this->role_id;
+        $user->position_id = $this->position_id;
         $user->save();
         $this->closeModal();
         $this->dispatch('refresh-list-employee-project');

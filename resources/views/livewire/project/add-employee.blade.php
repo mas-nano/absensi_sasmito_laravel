@@ -30,6 +30,19 @@
             <span class="text-xs text-red-500">{{ $message }}</span>
         @enderror
     </div>
+    <div class="">
+        <label for="position_id" class="text-sm block  text-black mb-2">Jabatan</label>
+        <select type="text" name="position_id" id="position_id" wire:model="position_id" placeholder="Jabatan"
+            class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
+            <option value="">-- Pilih Jabatan --</option>
+            @foreach ($positions as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
+        @error('position_id')
+            <span class="text-xs text-red-500">{{ $message }}</span>
+        @enderror
+    </div>
     <div class="flex justify-end space-x-4">
         <button class="text-black" type="submit">Simpan</button>
     </div>
