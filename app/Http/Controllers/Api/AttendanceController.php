@@ -62,7 +62,7 @@ class AttendanceController extends Controller
         $project = Project::find(Auth::user()->project_id);
 
         if ($this->calculateDistance($validated['lat'], $validated['lng'], $project->lat, $project->lng) >= 20) {
-            return $this->responseError('Lokasi terlalu jauh dengan kantor', 403);
+            return $this->responseError('Lokasi terlalu jauh dengan ' . $project->name, 403);
         }
         $lastAttendance = Attendance::where('user_id', auth()->user()->getAuthIdentifier())->whereDate('created_at', Carbon::now('GMT+7')->toDateString())->latest()->first();
 
