@@ -38,7 +38,8 @@ RUN docker-php-ext-install gd
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install GMP
-RUN apt-get update -y
+RUN apt-get update && apt-get install -y gnupg gnupg2 gnupg1 --fix-missing
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010 AA8E81B4331F7F50 9D6D8F6BC857C906
 RUN apt-get install -y libgmp-dev re2c libmhash-dev libmcrypt-dev file
 RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/
 RUN docker-php-ext-configure gmp
