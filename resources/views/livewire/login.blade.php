@@ -3,7 +3,8 @@
         alt="">
     <div class="w-1/2 z-10"></div>
     <div class="w-1/2 h-full flex justify-center items-center z-10">
-        <div class="flex flex-col max-w-md p-6 rounded-md sm:p-10 dark:bg-gray-900 dark:text-gray-100">
+        <div
+            class="flex flex-col max-w-md p-6 bg-white text-black rounded-md sm:p-10 dark:bg-gray-900 dark:text-gray-100">
             <div class="mb-8 text-center">
                 <h1 class="my-3 text-4xl font-bold">Sign in</h1>
                 <p class="text-sm dark:text-gray-400">Sign in to access your account</p>
