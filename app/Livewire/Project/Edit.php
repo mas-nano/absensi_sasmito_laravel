@@ -5,11 +5,13 @@ namespace App\Livewire\Project;
 use App\Models\Project;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Storage;
 use Toaster;
 
 class Edit extends Component
 {
+    use WithFileUploads;
     public ?Project $project;
 
     #[Validate('nullable|image|max:4096', as: 'Foto Proyek')]
