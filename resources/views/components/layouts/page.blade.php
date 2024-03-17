@@ -18,6 +18,12 @@
                 <i class="ph-fill ph-files text-xl text-black dark:text-white"></i>
                 <p class="text-black dark:text-white text-sm">Laporan</p>
             </a>
+            <a href="{{ route('announcement.index') }}" wire:navigate
+                class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('announcement*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
+                <div class="h-4 w-4"></div>
+                <i class="ph ph-newspaper text-xl text-black dark:text-white"></i>
+                <p class="text-black dark:text-white text-sm">Pengumuman</p>
+            </a>
             <a href="{{ route('setting.index') }}" wire:navigate
                 class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('setting*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
                 <div class="h-4 w-4"></div>

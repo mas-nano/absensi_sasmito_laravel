@@ -31,15 +31,13 @@ class LeaveController extends Controller
             'start_date' => 'required|date',
             'to_date' => 'required|date',
             'reason' => 'required',
-            'type' => ['required', Rule::in(['Izin Terlambat', 'Perjalanan Dinas', 'Sakit', 'Izin Lainnya', 'Izin Pulang Lebih Awal'])],
-            'title' => 'required',
+            'type' => ['required', Rule::in(['Izin Terlambat', 'Dinas Luar', 'Sakit', 'Lainnya', 'Izin Pulang Lebih Awal'])],
             'photo' => 'nullable|image|mimes:png,jpg,jpeg',
         ], [], [
             'start_date' => "Tanggal Mulai",
             'to_date' => "Tanggal Selesai",
             'reason' => 'Alasan',
             'type' => 'Jenis Izin',
-            'title' => 'Judul',
             'photo' => 'Bukti Izin'
         ]);
 
@@ -53,13 +51,13 @@ class LeaveController extends Controller
         if ($request->hasFile('photo')) {
             $leave->photo = $this->upload('bukti-izin', $validated['photo']);
         }
-        $leave->title = $validated['title'];
         $leave->start_date = Carbon::parse($validated['start_date']);
         $leave->to_date = Carbon::parse($validated['to_date']);
         $leave->reason = $validated['reason'];
         $leave->type = $validated['type'];
         $leave->status = 2;
         $leave->user_id = $request->user()->id;
+        $leave->project_id = $request->user()->project_id;
         $leave->save();
 
         return $this->responseCreated('Izin berhasil diajukan');

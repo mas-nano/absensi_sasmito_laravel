@@ -49,7 +49,7 @@
                         alt="" class="w-100 h-100 object-cover object-center">
                 </div>
             </div>
-            <div class="col-span-3 grid grid-cols-2 gap-4">
+            <div class="col-span-3 grid grid-cols-2 gap-4" x-data="leaflet">
                 <div class="">
                     <label for="name" class="text-sm block dark:text-white text-black mb-2">Nama Proyek</label>
                     <input type="text" name="name" id="name" wire:model="name" placeholder="Nama Proyek"
@@ -84,7 +84,23 @@
                         <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="col-span-2" x-data="leaflet" wire:key="{{ rand() }}">
+                <div class="">
+                    <label for="lat" class="text-sm block dark:text-white text-black mb-2">Lattitude</label>
+                    <input type="text" name="lat" id="lat" x-model="lat" placeholder="Lattitude"
+                        class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
+                    @error('lat')
+                        <span class="text-xs text-red-500">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="">
+                    <label for="lng" class="text-sm block dark:text-white text-black mb-2">Longitude</label>
+                    <input type="text" name="lng" id="lng" x-model="lng" placeholder="Longitude"
+                        class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
+                    @error('lng')
+                        <span class="text-xs text-red-500">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-span-2" wire:key="{{ rand() }}">
                     <label for="address" class="text-sm block dark:text-white text-black mb-2">Titik Lokasi
                         Proyek</label>
                     <div x-ref="map" class="h-96 w-full"></div>
@@ -132,10 +148,23 @@
                 map.on('click', (e) => {
                     this.lat = e.latlng.lat
                     this.lng = e.latlng.lng
-                    if (marker != null) {
-                        marker.remove()
+                })
+
+                this.$watch('lat', () => {
+                    if (this.lat != null && this.lng !== null) {
+                        if (marker != null) {
+                            marker.remove()
+                        }
+                        marker = L.marker([this.lat, this.lng]).addTo(map)
                     }
-                    marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map)
+                })
+                this.$watch('lng', () => {
+                    if (this.lat != null && this.lng !== null) {
+                        if (marker != null) {
+                            marker.remove()
+                        }
+                        marker = L.marker([this.lat, this.lng]).addTo(map)
+                    }
                 })
             },
         }))

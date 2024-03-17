@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AnnouncementController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LeaveController;
@@ -27,12 +28,14 @@ Route::prefix('/v1')->group(function () {
             Route::post('/logout', 'logout');
         });
     });
+    Route::get('/announcement/{announcement}/pdf', [AnnouncementController::class, 'pdf']);
     Route::middleware(['api', 'jwt.verify'])->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
         Route::prefix('/attendance')->controller(AttendanceController::class)->group(function () {
             Route::post('/create', 'create');
             Route::get('/showLogin', 'showLogin');
             Route::get('/checkStatus', 'checkStatus');
+            Route::get('/checkLeave', 'checkLeave');
         });
         Route::prefix('/users')->controller(UserController::class)->group(function () {
             Route::post('/updateMe', 'updateMe');
@@ -47,6 +50,10 @@ Route::prefix('/v1')->group(function () {
             Route::get('/{project}/users', 'getUsers');
             Route::get('/{project}/list-attendance', 'listAttendance');
             Route::get('/{user}/self-report', 'selfReport');
+        });
+        Route::prefix('/announcement')->controller(AnnouncementController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{announcement}', 'show');
         });
     });
 });

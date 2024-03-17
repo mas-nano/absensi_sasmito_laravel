@@ -22,9 +22,9 @@ class UserController extends Controller
     public function updateMe(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'first_title' => 'required',
+            'first_title' => 'nullable',
             'name' => 'required',
-            'last_title' => 'required',
+            'last_title' => 'nullable',
             'email' => 'required',
             'username' => 'required',
             'address' => 'required',

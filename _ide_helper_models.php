@@ -12,6 +12,31 @@
 
 namespace App\Models{
 /**
+ * App\Models\Announcement
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property string $title
+ * @property string $body
+ * @property string|null $attachment
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereAttachment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereUuid($value)
+ */
+	class Announcement extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Attendance
  *
  * @property int $id
@@ -24,12 +49,14 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $project_id
+ * @property string|null $date
  * @property-read \App\Models\Project|null $project
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance query()
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereLat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereLng($value)
@@ -54,7 +81,6 @@ namespace App\Models{
  * @property int $status
  * @property string $reason
  * @property string $type
- * @property string $title
  * @property string|null $photo
  * @property int|null $approved_by
  * @property int $user_id
@@ -74,7 +100,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Leave whereReason($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leave whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leave whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Leave whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leave whereToDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leave whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leave whereUpdatedAt($value)
@@ -201,6 +226,27 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Setting
+ *
+ * @property int $id
+ * @property string $field
+ * @property string|null $value
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereField($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereValue($value)
+ */
+	class Setting extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\User
  *
  * @property int $id
@@ -215,6 +261,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $project_id
  * @property int|null $position_id
+ * @property string|null $device_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attendance> $attendances
  * @property-read int|null $attendances_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Leave> $leaves
@@ -232,6 +279,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeviceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)

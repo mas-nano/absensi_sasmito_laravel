@@ -6,6 +6,7 @@ use Closure;
 use Exception;
 use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\Response;
 
 class JWTMiddleware
@@ -17,8 +18,22 @@ class JWTMiddleware
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
+        if (!$request->header('X-App-Version')) {
+            return $this->sendErrorToken('Update Absensi SASMITO ke versi terbaru');
+        }
+
+        if ($request->header('X-App-Version') != '1.0.0') {
+            return $this->sendErrorToken('Update Absensi SASMITO ke versi terbaru');
+        }
+
+        if (!$request->header('X-Device-Id')) {
+            return $this->sendErrorToken('Tidak bisa login. Anda sudah login di tempat lain');
+        }
         try {
             $user = JWTAuth::parseToken()->authenticate();
+            if (auth()->user()->device_id !== $request->header('X-Device-Id')) {
+                return $this->sendErrorToken('Tidak bisa login. Anda sudah login di tempat lain');
+            }
         } catch (Exception $e) {
             if ($e instanceof \PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException) {
                 return $this->sendErrorToken('Token is Invalid');
