@@ -88,7 +88,9 @@ class AttendanceController extends Controller
         $validator = Validator::make($request->all(), [
             'lng' => 'required',
             'lat' => 'required',
-            'reason' => 'nullable'
+            'reason' => 'nullable|min:10'
+        ], [], [
+            'reason' => "Alasan"
         ]);
 
         if ($validator->fails()) {
