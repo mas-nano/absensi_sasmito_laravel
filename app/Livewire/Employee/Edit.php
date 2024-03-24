@@ -3,6 +3,7 @@
 namespace App\Livewire\Employee;
 
 use App\Models\Profile;
+use App\Models\User;
 use App\Traits\UploadFile;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -99,6 +100,32 @@ class Edit extends Component
             return $this->redirectRoute('employee.index', navigate: true);
         } catch (\Throwable $th) {
             Toaster::error('Terjadi kesalahan pada sistem, coba ulang beberapa saat lagi ' . $th->getMessage());
+        }
+    }
+
+    public function phoneReset()
+    {
+        try {
+            $user = User::find($this->profile->user_id);
+            $user->device_id = null;
+            $user->save();
+
+            Toaster::success('HP berhasil di reset');
+        } catch (\Throwable $th) {
+            Toaster::error('Terjadi kesalahan pada sistem, coba beberapa saat lagi.');
+        }
+    }
+
+    public function passwordReset()
+    {
+        try {
+            $user = User::find($this->profile->user_id);
+            $user->password = bcrypt(12345678);
+            $user->save();
+
+            Toaster::success('Password berhasil di reset. Password: 12345678');
+        } catch (\Throwable $th) {
+            Toaster::error('Terjadi kesalahan pada sistem, coba beberapa saat lagi.');
         }
     }
 }

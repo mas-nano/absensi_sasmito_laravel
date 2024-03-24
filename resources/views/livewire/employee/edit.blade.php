@@ -100,6 +100,19 @@
                         <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="">
+                    <label for="phone_number" class="text-sm block dark:text-white text-black mb-2">Reset HP</label>
+                    <button type="button"
+                        class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg"
+                        wire:click="phoneReset">Reset</button>
+                </div>
+                <div class="">
+                    <label for="phone_number" class="text-sm block dark:text-white text-black mb-2">Reset
+                        Password</label>
+                    <button type="button"
+                        class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg"
+                        wire:click="passwordReset">Reset</button>
+                </div>
             </div>
         </div>
     </form>

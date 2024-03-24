@@ -45,7 +45,7 @@ class ProjectController extends Controller
         $user = User::with(['profile', 'position', 'attendances' => function ($query) use ($project, $validated) {
             $query->where('project_id', $project->id)->where('date', $validated['date']);
         }, 'leaves' => function ($query) use ($project, $validated) {
-            $query->where('start_date', '<=', Carbon::parse($validated['date']))->where('to_date', '>=', Carbon::parse($validated['date']))->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('project_id', $project->id);
+            $query->where('start_date', '<=', Carbon::parse($validated['date']))->where('to_date', '>=', Carbon::parse($validated['date']))->where('project_id', $project->id);
         }])->where('id', $validated['user_id'])->first();
 
         return $this->responseSuccessWithData('data user', $user);

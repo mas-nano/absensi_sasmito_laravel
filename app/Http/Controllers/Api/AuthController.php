@@ -25,6 +25,7 @@ class AuthController extends Controller
         ], [], [
             'username' => 'Username',
             'password' => 'Password',
+            'device_id' => "Device ID"
         ]);
 
         if ($validator->fails()) {
@@ -32,8 +33,7 @@ class AuthController extends Controller
         }
         $validated = $validator->validated();
 
-        $token = Auth::attempt(['username' => $validated['username'], 'password' => $validated['password']]);
-        if (!$token) {
+        if (!Auth::attempt(['username' => $validated['username'], 'password' => $validated['password']])) {
             return $this->responseError('Email atau password Anda salah', 401);
         }
 
@@ -46,16 +46,20 @@ class AuthController extends Controller
             $user->device_id = $validated['device_id'];
             $user->save();
         } else if (Auth::user()->device_id != $validated['device_id']) {
+            $user = User::find(Auth::id());
+            $user->tokens()->delete();
             Auth::logout();
             return $this->responseError('Tidak bisa login. Anda sudah login di tempat lain', 401);
         }
 
         if ((Auth::user()->role_id == null || Auth::user()->role_id == 1) && Auth::user()->project_id == null) {
+            $user = User::find(Auth::id());
+            $user->tokens()->delete();
             Auth::logout();
             return $this->responseError('Tidak bisa login. Hubungi admin untuk mengatur proyek dan role', 401);
         }
         $user = User::with('role', 'position', 'profile', 'project')->find(Auth::user()->getAuthIdentifier());
-        $user->setAttribute('accessToken', $token);
+        $user->setAttribute('accessToken', $user->createToken($validated['device_id'])->plainTextToken);
         $user->setAttribute('type', 'Bearer');
         return $this->responseSuccessWithData('Login successfully', $user);
     }

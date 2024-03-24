@@ -103,6 +103,6 @@ class UserController extends Controller
             $profile->user_id = $request->user()->id;
         }
         $profile->save();
-        return $this->responseSuccess('Profile updated');
+        return $this->responseSuccessWithData('Profile updated', $path);
     }
 }

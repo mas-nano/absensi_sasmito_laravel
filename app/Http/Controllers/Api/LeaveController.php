@@ -21,7 +21,7 @@ class LeaveController extends Controller
 
     public function getSingleList(Request $request): JsonResponse
     {
-        $leaves = Leave::where('user_id', $request->user()->id)->get();
+        $leaves = Leave::where('user_id', $request->user()->id)->latest()->get();
         return $this->responseSuccessWithData('Single leaves', $leaves);
     }
 

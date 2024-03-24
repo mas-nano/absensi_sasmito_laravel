@@ -109,7 +109,7 @@ class AttendanceController extends Controller
         }
 
         if ($this->calculateDistance($validated['lat'], $validated['lng'], $project->lat, $project->lng) > 20) {
-            return $this->responseError('Lokasi terlalu jauh dengan ' . $project->name, 403);
+            return $this->responseError('Lokasi terlalu jauh dengan ' . $project->name, 403, true);
         }
 
         $attendance = new Attendance();
@@ -142,10 +142,22 @@ class AttendanceController extends Controller
                         }
                     }
                 } else {
+                    if ($validated['reason'] == null) {
+                        return $this->responseError('Anda tidak absen masuk. Isi Alasan', 403);
+                    }
                     $attendance->date = $now->toDateString();
                     if ($project->check_in_time > $timeLimit && $now->lt(Carbon::parse($timeLimit))) {
                         $attendance->date = Carbon::now()->subDay()->toDateString();
                     }
+                    $leave = new Leave();
+                    $leave->start_date = $now->toDateString();
+                    $leave->user_id = $request->user()->id;
+                    $leave->project_id = $request->user()->project_id;
+                    $leave->to_date = $now->toDateString();
+                    $leave->status = 2;
+                    $leave->reason = $validated['reason'];
+                    $leave->type = 'Lupa Absen Masuk';
+                    $leave->save();
                     $attendance->type = 'out';
                     $attendance->status = 'Tepat Waktu';
                 }
