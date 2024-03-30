@@ -120,7 +120,7 @@ class Edit extends Component
     {
         try {
             $user = User::find($this->profile->user_id);
-            $user->password = bcrypt(12345678);
+            $user->password = bcrypt("12345678");
             $user->save();
 
             Toaster::success('Password berhasil di reset. Password: 12345678');

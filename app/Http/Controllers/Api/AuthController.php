@@ -34,7 +34,7 @@ class AuthController extends Controller
         $validated = $validator->validated();
 
         if (!Auth::attempt(['username' => $validated['username'], 'password' => $validated['password']])) {
-            return $this->responseError('Email atau password Anda salah', 401);
+            return $this->responseError('Username atau password Anda salah', 401);
         }
 
         if (Auth::user()->device_id == null) {

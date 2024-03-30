@@ -170,7 +170,7 @@ class AttendanceController extends Controller
         } else {
             if ($lastAttendance->type == 'in') {
                 if ($project->check_out_time) {
-                    if ($now->lt(Carbon::parse($project->check_out_time)) && $validated['reason'] == null) {
+                    if ($now->gt(Carbon::parse($timeLimit)) && $now->lt(Carbon::parse($project->check_out_time)) && $validated['reason'] == null) {
                         return $this->responseError('Anda Pulang Cepat. Isi Alasan', 403);
                     } else {
                         $attendance->date = $now->toDateString();
