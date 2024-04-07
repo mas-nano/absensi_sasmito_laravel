@@ -18,12 +18,14 @@
                 <i class="ph-fill ph-files text-xl text-black dark:text-white"></i>
                 <p class="text-black dark:text-white text-sm">Laporan</p>
             </a>
-            <a href="{{ route('announcement.index') }}" wire:navigate
-                class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('announcement*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
-                <div class="h-4 w-4"></div>
-                <i class="ph ph-newspaper text-xl text-black dark:text-white"></i>
-                <p class="text-black dark:text-white text-sm">Pengumuman</p>
-            </a>
+            @if (auth()->user()->role_id == 1)
+                <a href="{{ route('announcement.index') }}" wire:navigate
+                    class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('announcement*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
+                    <div class="h-4 w-4"></div>
+                    <i class="ph ph-newspaper text-xl text-black dark:text-white"></i>
+                    <p class="text-black dark:text-white text-sm">Pengumuman</p>
+                </a>
+            @endif
             <a href="{{ route('setting.index') }}" wire:navigate
                 class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('setting*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
                 <div class="h-4 w-4"></div>
@@ -31,33 +33,35 @@
                 <p class="text-black dark:text-white text-sm">Settings</p>
             </a>
         </div>
-        <div class="flex-col flex space-y-3">
-            <p class="text-sm text-[#1C1C1C66] dark:text-[#FFFFFF66] py-1 px-3">Master</p>
-            <a href="/employee" wire:navigate
-                class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('employee*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
-                <div class="w-4 h-4"></div>
-                <i class="ph-duotone ph-users-three text-xl text-black dark:text-white"></i>
-                <p class="text-black dark:text-white text-sm">Pegawai</p>
-            </a>
-            <a href="/position" wire:navigate
-                class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('position*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
-                <div class="w-4 h-4"></div>
-                <i class="ph-duotone ph-briefcase text-xl text-black dark:text-white"></i>
-                <p class="text-black dark:text-white text-sm">Jabatan</p>
-            </a>
-            <a href="/project" wire:navigate
-                class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('project*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
-                <div class="w-4 h-4"></div>
-                <i class="ph-duotone ph-folder text-xl text-black dark:text-white"></i>
-                <p class="text-black dark:text-white text-sm">Proyek</p>
-            </a>
-            <a href="{{ route('role.index') }}" wire:navigate
-                class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('role*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
-                <div class="w-4 h-4"></div>
-                <i class="ph-duotone ph-shield text-xl text-black dark:text-white"></i>
-                <p class="text-black dark:text-white text-sm">Role</p>
-            </a>
-        </div>
+        @if (auth()->user()->role_id == 1)
+            <div class="flex-col flex space-y-3">
+                <p class="text-sm text-[#1C1C1C66] dark:text-[#FFFFFF66] py-1 px-3">Master</p>
+                <a href="/employee" wire:navigate
+                    class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('employee*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
+                    <div class="w-4 h-4"></div>
+                    <i class="ph-duotone ph-users-three text-xl text-black dark:text-white"></i>
+                    <p class="text-black dark:text-white text-sm">Pegawai</p>
+                </a>
+                <a href="/position" wire:navigate
+                    class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('position*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
+                    <div class="w-4 h-4"></div>
+                    <i class="ph-duotone ph-briefcase text-xl text-black dark:text-white"></i>
+                    <p class="text-black dark:text-white text-sm">Jabatan</p>
+                </a>
+                <a href="/project" wire:navigate
+                    class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('project*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
+                    <div class="w-4 h-4"></div>
+                    <i class="ph-duotone ph-folder text-xl text-black dark:text-white"></i>
+                    <p class="text-black dark:text-white text-sm">Proyek</p>
+                </a>
+                <a href="{{ route('role.index') }}" wire:navigate
+                    class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('role*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
+                    <div class="w-4 h-4"></div>
+                    <i class="ph-duotone ph-shield text-xl text-black dark:text-white"></i>
+                    <p class="text-black dark:text-white text-sm">Role</p>
+                </a>
+            </div>
+        @endif
     </nav>
     <div class="w-full overflow-auto">
         <header

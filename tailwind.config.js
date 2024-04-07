@@ -28,6 +28,7 @@ export default {
             red: colors.red,
             blue: colors.blue,
             green: colors.green,
+            slate: colors.slate,
         },
     },
     plugins: [require("@tailwindcss/forms")],

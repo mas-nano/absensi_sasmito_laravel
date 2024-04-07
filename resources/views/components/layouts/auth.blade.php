@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/duotone/style.css" />
 </head>
 
-<body>
+<body class="print:invisible visible">
     {{ $slot }}
 
     @livewire('wire-elements-modal')

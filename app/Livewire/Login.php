@@ -27,9 +27,12 @@ class Login extends Component
     public function login()
     {
         $validated = $this->validate();
+        $roleCanAccess = collect([1, 4, 7]);
 
         if (Auth::guard('web')->attempt($validated)) {
-            if (Auth::guard('web')->user()->role_id !== 1) {
+            if (!$roleCanAccess->contains(function (int $value) {
+                return $value == Auth::guard('web')->user()->role_id;
+            })) {
                 Auth::guard('web')->logout();
                 Toaster::error('Gagal Login!');
                 return;
