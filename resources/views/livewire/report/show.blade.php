@@ -44,11 +44,13 @@
                         <tr>
                             @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
                                 <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center dark:text-white text-black print:dark:text-black">Rekapitulasi
+                                    class="text-center text-lg print:text-xl dark:text-white text-black print:dark:text-black">
+                                    Rekapitulasi
                                     Absensi Staf</th>
                             @else
                                 <th colspan="{{ count($listDates) + 5 }}"
-                                    class="text-center dark:text-white text-black print:dark:text-black">Rekapitulasi
+                                    class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
+                                    Rekapitulasi
                                     Uang
                                     Makan Staf</th>
                             @endif
@@ -56,25 +58,29 @@
                         <tr>
                             @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
                                 <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center dark:text-white text-black print:dark:text-black">Lokasi:
+                                    class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
+                                    Lokasi:
                                     {{ $project->name }}</th>
                             @else
                                 <th colspan="{{ count($listDates) + 5 }}"
-                                    class="text-center dark:text-white text-black print:dark:text-black">Lokasi:
+                                    class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
+                                    Lokasi:
                                     {{ $project->name }}</th>
                             @endif
                         </tr>
                         <tr>
                             @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
                                 <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center dark:text-white text-black print:dark:text-black">Periode:
+                                    class="text-center dark:text-white text-black text-lg print:dark:text-black">
+                                    Periode:
                                     {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
                                     -
                                     {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
                                 </th>
                             @else
                                 <th colspan="{{ count($listDates) + 5 }}"
-                                    class="text-center dark:text-white text-black print:dark:text-black">Periode:
+                                    class="text-center dark:text-white text-black text-lg print:dark:text-black">
+                                    Periode:
                                     {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
                                     -
                                     {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
@@ -82,7 +88,7 @@
                             @endif
                         </tr>
                         <tr
-                            class="text-left border-b-[1px] dark:border-b-[#FFFFFF33] border-b-[#1C1C1C33] print:dark:border-b-[#1C1C1C33] text-[#1C1C1C66] dark:text-[#FFFFFF66] print:dark:text-black text-xs ">
+                            class="text-left border-b-[1px] dark:border-b-[#FFFFFF33] border-b-[#1C1C1C33] print:dark:border-b-[#1C1C1C33] text-[#1C1C1C66] dark:text-[#FFFFFF66] print:dark:text-black text-xs print:text-base print:font-semibold ">
                             <th class="py-3 font-normal ">Nama</th>
                             @for ($i = 0; $i < count($listDates); $i++)
                                 <th class="py-3 font-normal ">
@@ -95,6 +101,9 @@
                                 <th class="py-3 font-normal ">Jumlah</th>
                                 <th class="py-3 font-normal ">Tanda Tangan</th>
                             @endif
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,11 +131,17 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
                                 <td colspan="{{ count($listDates) + 5 }}" class="h-24 align-bottom">
                                     <div class="flex justify-between">
                                         <div class="text-center">
                                             <p
-                                                class="underline dark:text-white text-black print:dark:text-black text-xs">
+                                                class="underline dark:text-white text-black print:dark:text-black text-xs print:font-semibold">
                                                 {{ @$project->users->where('role_id', 7)->first()->name }}
                                             </p>
                                             <p class=" dark:text-white text-black print:dark:text-black text-xs">
@@ -135,7 +150,7 @@
                                         </div>
                                         <div class="text-center">
                                             <p
-                                                class="underline dark:text-white text-black print:dark:text-black text-xs">
+                                                class="underline dark:text-white text-black print:dark:text-black text-xs print:font-semibold">
                                                 {{ @$project->users->where('role_id', 4)->first()->name }}
                                             </p>
                                             <p class=" dark:text-white text-black print:dark:text-black text-xs">
@@ -144,7 +159,7 @@
                                         </div>
                                         <div class="text-center">
                                             <p
-                                                class="underline dark:text-white text-black print:dark:text-black text-xs">
+                                                class="underline dark:text-white text-black print:dark:text-black text-xs print:font-semibold">
                                                 {{ @$project->users->where('role_id', 3)->first()->name }}
                                             </p>
                                             <p class=" dark:text-white text-black print:dark:text-black text-xs">

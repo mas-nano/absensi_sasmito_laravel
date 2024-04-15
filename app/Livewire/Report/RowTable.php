@@ -3,6 +3,7 @@
 namespace App\Livewire\Report;
 
 use Livewire\Component;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class RowTable extends Component
 {
@@ -36,8 +37,10 @@ class RowTable extends Component
                 }
             }
             if (is_numeric($uang_makan)) {
+                $console = new ConsoleOutput();
+                $console->writeln('info');
                 $this->total_uang_makan = number_format($uang_makan * $this->attend, 0, ",", ".");
-                $this->dispatch('update-total', id: $this->user->id, value: $uang_makan);
+                $this->dispatch('update-total', id: $this->user->id, value: $uang_makan * $this->attend);
             }
         }
     }
