@@ -35,7 +35,10 @@ class RowTable extends Component
                     $this->attend++;
                 }
             }
-            $this->total_uang_makan = number_format($uang_makan * $this->attend, 0, ",", ".");
+            if (is_numeric($uang_makan)) {
+                $this->total_uang_makan = number_format($uang_makan * $this->attend, 0, ",", ".");
+                $this->dispatch('update-total', id: $this->user->id, value: $uang_makan);
+            }
         }
     }
 

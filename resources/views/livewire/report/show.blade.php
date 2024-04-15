@@ -101,6 +101,9 @@
                         @foreach ($users as $key => $item)
                             <livewire:report.row-table :user="$item" :listDates="$listDates" :key="rand()" />
                         @endforeach
+                        @if (auth()->user()->role_id != 1)
+                            <livewire:report.grand-total :users="$project->users" :listDates="$listDates" :key="rand()" />
+                        @endif
                     </tbody>
                     <tfoot>
                         @if (auth()->user()->role_id != 1)

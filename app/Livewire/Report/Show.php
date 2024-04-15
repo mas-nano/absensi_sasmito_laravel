@@ -33,7 +33,6 @@ class Show extends Component
                     return Carbon::parse($val)->setTimezone('Asia/Jakarta')->toDateString();
                 }, $value);
             }
-            $this->dispatch('report-row-refresh');
         }
     }
 
@@ -60,7 +59,7 @@ class Show extends Component
             'leaves' => Leave::with('user.profile')->whereProjectId(null)->paginate(10, pageName: 'leave-page'),
             'projects' => [],
             'users' => $users,
-            'listDates' => $listDates
+            'listDates' => $listDates,
         ]);
     }
 }
