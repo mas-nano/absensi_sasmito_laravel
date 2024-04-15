@@ -42,7 +42,7 @@
                 <table class="w-full print:visible print:top-0 print:left-0 print:absolute" id="table">
                     <thead>
                         <tr>
-                            @if (auth()->user()->role_id == 1)
+                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
                                 <th colspan="{{ count($listDates) + 2 }}"
                                     class="text-center dark:text-white text-black print:dark:text-black">Rekapitulasi
                                     Absensi Staf</th>
@@ -54,7 +54,7 @@
                             @endif
                         </tr>
                         <tr>
-                            @if (auth()->user()->role_id == 1)
+                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
                                 <th colspan="{{ count($listDates) + 2 }}"
                                     class="text-center dark:text-white text-black print:dark:text-black">Lokasi:
                                     {{ $project->name }}</th>
@@ -65,7 +65,7 @@
                             @endif
                         </tr>
                         <tr>
-                            @if (auth()->user()->role_id == 1)
+                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
                                 <th colspan="{{ count($listDates) + 2 }}"
                                     class="text-center dark:text-white text-black print:dark:text-black">Periode:
                                     {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
@@ -90,7 +90,7 @@
                                 </th>
                             @endfor
                             <th class="py-3 font-normal ">Hari</th>
-                            @if (auth()->user()->role_id != 1)
+                            @if (auth()->user()->role_id != 1 || auth()->user()->role_id != 3)
                                 <th class="py-3 font-normal ">Uang Makan</th>
                                 <th class="py-3 font-normal ">Jumlah</th>
                                 <th class="py-3 font-normal ">Tanda Tangan</th>
@@ -101,12 +101,12 @@
                         @foreach ($users as $key => $item)
                             <livewire:report.row-table :user="$item" :listDates="$listDates" :key="rand()" />
                         @endforeach
-                        @if (auth()->user()->role_id != 1)
+                        @if (auth()->user()->role_id != 1 || auth()->user()->role_id != 3)
                             <livewire:report.grand-total :users="$project->users" :listDates="$listDates" :key="rand()" />
                         @endif
                     </tbody>
                     <tfoot>
-                        @if (auth()->user()->role_id != 1)
+                        @if (auth()->user()->role_id != 1 || auth()->user()->role_id != 3)
                             <tr>
                                 <td colspan="{{ count($listDates) + 5 }}"
                                     class="dark:text-white text-black print:dark:text-black text-xs">Surabaya,
