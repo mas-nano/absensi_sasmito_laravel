@@ -1,4 +1,4 @@
-<div class="mt-5 w-full grid grid-cols-2 p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#F7F9FB]">
+<div class="mt-5 w-full grid md:grid-cols-2 grid-cols-1 p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#F7F9FB]">
     @if (!request()->routeIs('project.show'))
         <div class="col-span-2">
             <button class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg"

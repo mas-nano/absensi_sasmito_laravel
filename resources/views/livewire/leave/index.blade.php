@@ -23,7 +23,7 @@
                 wire:model.live.debounce.500ms="search"
                 class=" px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
         </div>
-        <div class="mt-5 grid grid-cols-3 gap-7">
+        <div class="mt-5 grid md:grid-cols-3 gap-7 grid-cols-1">
             @forelse ($projects as $item)
                 <div class="p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#E5ECF680] grid grid-cols-5 gap-4"
                     wire:key="{{ $item->id }}">

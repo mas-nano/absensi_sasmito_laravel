@@ -1,5 +1,5 @@
 <x-slot:title>
-    Tambah Pengumuman
+    Ubah Pengumuman
 </x-slot:title>
 
 <x-page-layout>
@@ -15,17 +15,17 @@
         </li>
         <li class="flex items-center space-x-1">
             <span class="px-1 py-2 text-[#1C1C1C66] dark:text-[#FFFFFF66] text-sm">/</span>
-            <span class="px-1 py-2 text-black dark:text-white text-sm">Tambah Pengumuman</span>
+            <span class="px-1 py-2 text-black dark:text-white text-sm">Ubah Pengumuman</span>
         </li>
     </x-slot:breadcrumbs>
 
     <form wire:submit="save">
         <div class="flex justify-between items-center">
-            <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Tambah Pengumuman</p>
+            <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Ubah Pengumuman</p>
             <button type="submit"
                 class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg">Simpan</button>
         </div>
-        <div class="mt-5 w-full grid grid-cols-4 p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#F7F9FB] gap-6">
+        <div class="mt-5 w-full grid md:grid-cols-4 grid-cols-1 p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#F7F9FB] gap-6">
             <div class="">
                 <label class="text-sm block dark:text-white text-black mb-2">Lampiran</label>
                 <label class="block mb-2">
@@ -48,7 +48,7 @@
                         class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg">Lihat</a>
                 @endif
             </div>
-            <div class="col-span-3 grid grid-cols-1 gap-4">
+            <div class="md:col-span-3 grid grid-cols-1 gap-4">
                 <div class="">
                     <label for="title" class="text-sm block dark:text-white text-black mb-2">Judul</label>
                     <input type="text" name="title" id="title" wire:model="title" placeholder="Judul"

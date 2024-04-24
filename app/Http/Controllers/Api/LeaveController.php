@@ -47,7 +47,7 @@ class LeaveController extends Controller
 
         $validated = $validator->validated();
 
-        $leaveExists = Leave::where('user_id', $request->user()->id)->where('project_id', $request->user()->project_id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('start_date', '>=', date('Y-m-d'))->where('to_date', '<=', date('Y-m-d'))->first();
+        $leaveExists = Leave::where('user_id', $request->user()->id)->where('project_id', $request->user()->project_id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('start_date', '>=', date('Y-m-d'))->where('to_date', '<=', date('Y-m-d'))->where('status', 2)->first();
         if ($leaveExists) {
             return $this->responseError('Anda sudah melakukan izin hari ini', 403);
         }

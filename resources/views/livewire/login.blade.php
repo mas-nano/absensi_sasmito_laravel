@@ -1,8 +1,8 @@
-<div class="w-screen h-screen flex relative">
+<div class="w-screen h-screen flex relative justify-center md:justify-end">
     <img src="{{ asset('assets/img/bg.png') }}" class="w-full h-full object-cover object-center absolute z-0 top-0 left-0"
         alt="">
-    <div class="w-1/2 z-10"></div>
-    <div class="w-1/2 h-full flex justify-center items-center z-10">
+    {{-- <div class="w-1/2 md:hidden md:w-0 z-10"></div> --}}
+    <div class="w-full md:w-1/2 h-full flex justify-center items-center z-10">
         <div
             class="flex flex-col max-w-md p-6 bg-white text-black rounded-md sm:p-10 dark:bg-gray-900 dark:text-gray-100">
             <div class="mb-8 text-center">

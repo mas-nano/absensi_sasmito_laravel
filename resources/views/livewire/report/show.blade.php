@@ -27,7 +27,7 @@
             </button>
         </div>
         <div class="mt-5 dark:bg-[#FFFFFF0D] bg-[#F7F9FB] rounded-2xl p-6">
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center flex-wrap">
                 <div class="flex space-x-3">
                     <button class="py-1 px-2 bg-black dark:bg-[#a4a5f7] text-sm text-white dark:text-black rounded-lg"
                         x-on:click="show='attendance'">Absensi</button>

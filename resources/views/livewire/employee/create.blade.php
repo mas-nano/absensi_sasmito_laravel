@@ -25,7 +25,7 @@
             <button type="submit"
                 class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg">Simpan</button>
         </div>
-        <div class="mt-5 w-full grid grid-cols-4 p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#F7F9FB] gap-6">
+        <div class="mt-5 w-full grid md:grid-cols-4 grid-cols-1 p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#F7F9FB] gap-6">
             <div class="">
                 <label class="block">
                     <span class="sr-only">Choose profile photo</span>
@@ -49,7 +49,7 @@
                     </div>
                 @endif
             </div>
-            <div class="col-span-3 grid grid-cols-2 gap-4">
+            <div class="md:col-span-3 grid md:grid-cols-2 grid-cols-1 gap-4">
                 <div class="">
                     <label for="first_title" class="text-sm block dark:text-white text-black mb-2">Gelar Depan</label>
                     <input type="text" name="first_title" id="first_title" wire:model="first_title"

@@ -26,7 +26,7 @@
             <img src="{{ $profile->profile_picture ? asset('storage/' . $profile->profile_picture) : asset('assets/img/no_profile.jpeg') }}"
                 alt="" class="w-100 h-100 object-cover object-center">
         </div>
-        <div class="col-span-3 grid grid-cols-2 gap-4">
+        <div class="col-span-3 grid md:grid-cols-2 grid-cols-1 gap-4">
             <div class="">
                 <label for="first_title" class="text-sm block dark:text-white text-black mb-2">Gelar Depan</label>
                 <p class="text-black dark:text-white">{{ $profile->first_title }}</p>

@@ -15,7 +15,7 @@
     </x-slot:breadcrumbs>
 
     <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Overview</p>
-    <div class="mt-5 grid grid-cols-4 gap-7">
+    <div class="mt-5 grid md:grid-cols-4 grid-cols-2 gap-7">
         <div class="p-6 rounded-2xl bg-[#E3F5FF] flex flex-col space-y-2">
             <p class="text-sm text-black">Views</p>
             <p class="text-2xl font-semibold text-black">7.265</p>
