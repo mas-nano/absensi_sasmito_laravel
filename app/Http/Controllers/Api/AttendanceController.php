@@ -24,14 +24,14 @@ class AttendanceController extends Controller
     public function checkLeave(Request $request): JsonResponse
     {
         $now = Carbon::now();
-        $todayLeave = Leave::where('user_id', $request->user()->id)->where('start_date', '<=', $now->toDateString())->where('to_date', '>=', $now->toDateString())->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->latest()->first();
+        $todayLeave = Leave::where('user_id', $request->user()->id)->where('start_date', '<=', $now->toDateString())->where('to_date', '>=', $now->toDateString())->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2)->latest()->first();
         return $this->responseSuccessWithData("Leave Data", $todayLeave);
     }
 
     public function showLogin(Request $request): JsonResponse
     {
         $attendances = Attendance::where('user_id', $request->user()->id)->whereDate('created_at', $request->get('date', Carbon::now()->toDateString()))->latest()->get();
-        $todayLeave = Leave::where('user_id', $request->user()->id)->where('start_date', '<=', $request->get('date', Carbon::now()->toDateString()))->where('to_date', '>=', $request->get('date', Carbon::now()->toDateString()))->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->latest()->get();
+        $todayLeave = Leave::where('user_id', $request->user()->id)->where('start_date', '<=', $request->get('date', Carbon::now()->toDateString()))->where('to_date', '>=', $request->get('date', Carbon::now()->toDateString()))->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2)->latest()->get();
         $res = $attendances->merge($todayLeave);
         return $this->responseSuccessWithData("Attendance Data", $res);
     }
@@ -50,7 +50,7 @@ class AttendanceController extends Controller
         //     $attendance = Attendance::where('user_id', $request->user()->id)->where('created_at', '>=', Carbon::parse($timeLimit)->subDay())->where('created_at', '<=', Carbon::parse($timeLimit))->latest()->first();
         // }
 
-        $todayLeave = Leave::where('user_id', $request->user()->id)->where('start_date', '<=', $now->toDateString())->where('to_date', '>=', $now->toDateString())->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->latest()->first();
+        $todayLeave = Leave::where('user_id', $request->user()->id)->where('start_date', '<=', $now->toDateString())->where('to_date', '>=', $now->toDateString())->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2)->latest()->first();
         if ($todayLeave) {
             $data->put('canCheckIn', false);
             $data->put('canCheckOut', false);

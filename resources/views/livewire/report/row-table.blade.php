@@ -4,7 +4,7 @@
     @for ($i = 0; $i < count($listDates); $i++)
         <td class="py-3 print:py-0 font-normal">
             {{-- {{ $user->leaves->where('start_date', '>=', $listDates[$i])->where('to_date', '<=', $listDates[$i])->first()? 'IZ': ($user->attendances->contains('date', $listDates[$i])? '1': '-') }} --}}
-            {{ $this->user->leaves->where('start_date', '<=', $listDates[$i])->where('to_date', '>=', $listDates[$i])->where('type', 'Dinas Luar')->first() || $user->attendances->contains('date', $listDates[$i])? '1': '-' }}
+            {{ ($this->user->leaves->where('start_date', '<=', $listDates[$i])->where('to_date', '>=', $listDates[$i])->where('type', 'Dinas Luar')->first()? '1': !$this->user->leaves->where('start_date', '<=', $listDates[$i])->where('to_date', '>=', $listDates[$i])->whereIn('type', ['Sakit', 'Lainnya'])->first() && $user->attendances->contains('date', $listDates[$i]))? '1': '-' }}
         </td>
     @endfor
     <td class="py-3 print:py-0 font-normal">

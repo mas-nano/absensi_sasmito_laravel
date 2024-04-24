@@ -20,7 +20,9 @@ class RowTable extends Component
         $this->listDates = $listDates;
         $this->total_uang_makan = 0;
         foreach ($listDates as $value) {
-            if ($this->user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->first() || $this->user->attendances->contains('date', $value)) {
+            if ($this->user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->first()) {
+                $this->attend++;
+            } elseif ($this->user->attendances->contains('date', $value) && !$this->user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->whereIn('type', ['Sakit', 'Lainnya'])->first()) {
                 $this->attend++;
             }
         }
@@ -32,7 +34,9 @@ class RowTable extends Component
             $this->attend = 0;
             $uang_makan = join("", explode(".", join("", explode(",", join("", explode(' ', $value))))));
             foreach ($this->listDates as $value) {
-                if ($this->user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->first() || $this->user->attendances->contains('date', $value)) {
+                if ($this->user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->first()) {
+                    $this->attend++;
+                } elseif ($this->user->attendances->contains('date', $value) && !$this->user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->whereIn('type', ['Sakit', 'Lainnya'])->first()) {
                     $this->attend++;
                 }
             }

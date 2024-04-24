@@ -18,6 +18,12 @@
                 <i class="ph-fill ph-files text-xl text-black dark:text-white"></i>
                 <p class="text-black dark:text-white text-sm">Laporan</p>
             </a>
+            <a href="{{ route('leave.index') }}" wire:navigate
+                class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('leave*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
+                <div class="h-4 w-4"></div>
+                <i class="ph-fill ph-files text-xl text-black dark:text-white"></i>
+                <p class="text-black dark:text-white text-sm">Perizinan</p>
+            </a>
             @if (auth()->user()->role_id == 1)
                 <a href="{{ route('announcement.index') }}" wire:navigate
                     class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('announcement*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">

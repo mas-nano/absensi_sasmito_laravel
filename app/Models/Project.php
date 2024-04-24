@@ -15,4 +15,9 @@ class Project extends Model
     {
         return $this->hasMany(User::class, 'project_id');
     }
+
+    public function leaves(): HasMany
+    {
+        return $this->hasMany(Leave::class, 'project_id');
+    }
 }

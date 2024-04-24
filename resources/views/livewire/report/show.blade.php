@@ -96,7 +96,7 @@
                                 </th>
                             @endfor
                             <th class="py-3 font-normal ">Hari</th>
-                            @if (auth()->user()->role_id != 1 || auth()->user()->role_id != 3)
+                            @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
                                 <th class="py-3 font-normal ">Uang Makan</th>
                                 <th class="py-3 font-normal ">Jumlah</th>
                                 <th class="py-3 font-normal ">Tanda Tangan</th>
@@ -110,12 +110,12 @@
                         @foreach ($users as $key => $item)
                             <livewire:report.row-table :user="$item" :listDates="$listDates" :key="rand()" />
                         @endforeach
-                        @if (auth()->user()->role_id != 1 || auth()->user()->role_id != 3)
+                        @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
                             <livewire:report.grand-total :users="$project->users" :listDates="$listDates" :key="rand()" />
                         @endif
                     </tbody>
                     <tfoot>
-                        @if (auth()->user()->role_id != 1 || auth()->user()->role_id != 3)
+                        @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
                             <tr>
                                 <td colspan="{{ count($listDates) + 5 }}"
                                     class="dark:text-white text-black print:dark:text-black text-xs">Surabaya,

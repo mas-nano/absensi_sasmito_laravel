@@ -27,7 +27,7 @@ class Login extends Component
     public function login()
     {
         $validated = $this->validate();
-        $roleCanAccess = collect([1, 4, 7, 3]);
+        $roleCanAccess = collect([1, 2, 4, 7, 3]);
 
         if (Auth::guard('web')->attempt($validated)) {
             if (!$roleCanAccess->contains(function (int $value) {

@@ -47,6 +47,11 @@ class LeaveController extends Controller
 
         $validated = $validator->validated();
 
+        $leaveExists = Leave::where('user_id', $request->user()->id)->where('project_id', $request->user()->project_id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('start_date', '>=', date('Y-m-d'))->where('to_date', '<=', date('Y-m-d'))->first();
+        if ($leaveExists) {
+            return $this->responseError('Anda sudah melakukan izin hari ini', 403);
+        }
+
         $leave = new Leave();
         if ($request->hasFile('photo')) {
             $leave->photo = $this->upload('bukti-izin', $validated['photo']);
@@ -55,7 +60,7 @@ class LeaveController extends Controller
         $leave->to_date = Carbon::parse($validated['to_date']);
         $leave->reason = $validated['reason'];
         $leave->type = $validated['type'];
-        $leave->status = 2;
+        $leave->status = 1;
         $leave->user_id = $request->user()->id;
         $leave->project_id = $request->user()->project_id;
         $leave->save();

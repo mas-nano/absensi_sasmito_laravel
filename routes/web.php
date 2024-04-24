@@ -46,6 +46,10 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/{announcement:uuid}', 'Show')->name('show');
         Route::get('/{announcement:uuid}/edit', 'Edit')->name('edit');
     });
+    Route::prefix('/leave')->name('leave.')->namespace('App\Livewire\Leave')->group(function () {
+        Route::get('/', 'Index')->name('index');
+        Route::get('/{project:uuid}', 'Detail')->name('show');
+    });
     Route::get('/setting', App\Livewire\Setting\Index::class)->name('setting.index');
     Route::get('/position', App\Livewire\Position\Index::class)->name('position.index');
 });
