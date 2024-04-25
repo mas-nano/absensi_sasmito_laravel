@@ -24,7 +24,7 @@ class ProjectController extends Controller
         return $this->responseSuccessWithData('user data', ['users' => User::with(['profile', 'role', 'attendances' => function ($query) use ($request) {
             $query->where('date', $request->query('date', date('Y-m-d')));
         }, 'leaves' => function ($query) use ($request, $project) {
-            $query->where('start_date', '<=', $request->query('date', date('Y-m-d')))->where('to_date', '>=', $request->query('date', date('Y-m-d')))->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('project_id', $project->id);
+            $query->where('start_date', '<=', $request->query('date', date('Y-m-d')))->where('to_date', '>=', $request->query('date', date('Y-m-d')))->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('project_id', $project->id)->where('status', 2);
         }])->where('project_id', $project->id)->when($request->get('search') != "" || $request->query('search') != null, function ($query) use ($request) {
             $query->where('name', 'ilike', '%' . $request->query('name') . '%');
         })->get(), 'project' => $project]);
