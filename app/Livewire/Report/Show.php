@@ -15,14 +15,29 @@ class Show extends Component
     public ?Project $project;
 
     public $dates;
+    public $users;
+    public $show;
 
     public function mount(Project $project)
     {
+        $isLeavePage = request()->query('leave-page', null);
+        if($isLeavePage){
+            $this->show = 'leave';
+        }else{
+            $this->show = 'attendance';
+        }
         $project->load('users.role');
         $this->project = $project;
         $this->dates = [
             date('Y-m-01'), date('Y-m-t')
         ];
+        $this->users = User::with(['profile', 'attendances' => function ($query) {
+            $query->where('project_id', $this->project->id)
+                ->where('date', '>=', $this->dates ? $this->dates[0] : Carbon::now()->format('Y-m-01'))
+                ->where('date', '<=',  $this->dates ? $this->dates[1] : Carbon::now()->format('Y-m-t'));
+        }, 'leaves' => function ($query) {
+            $query->where('project_id', $this->project->id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2);
+        }])->where('project_id', $this->project->id)->where('role_id', '!=', 2)->get();
     }
 
     public function updating($property, $value)
@@ -33,17 +48,18 @@ class Show extends Component
                     return Carbon::parse($val)->setTimezone('Asia/Jakarta')->toDateString();
                 }, $value);
             }
+            $this->users = User::with(['profile', 'attendances' => function ($query) {
+                $query->where('project_id', $this->project->id)
+                    ->where('date', '>=', $this->dates ? $this->dates[0] : Carbon::now()->format('Y-m-01'))
+                    ->where('date', '<=',  $this->dates ? $this->dates[1] : Carbon::now()->format('Y-m-t'));
+            }, 'leaves' => function ($query) {
+                $query->where('project_id', $this->project->id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2);
+            }])->where('project_id', $this->project->id)->where('role_id', '!=', 2)->get();
         }
     }
 
     public function render()
     {
-        $users = User::with(['profile', 'attendances' => function ($query) {
-            $query->where('project_id', $this->project->id)->where('date', '>=', $this->dates ? $this->dates[0] : Carbon::now()->format('Y-m-01'))->where('date', '<=',  $this->dates ? $this->dates[1] : Carbon::now()->format('Y-m-t'));
-        }, 'leaves' => function ($query) {
-            $query->where('project_id', $this->project->id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2);
-        }])->where('project_id', $this->project->id)->where('role_id', '!=', 2)->get();
-
         $listDates = [];
         if ($this->dates) {
             $listDates = array_map(function ($val) {
@@ -56,9 +72,8 @@ class Show extends Component
         }
         return view('livewire.report.show', [
             'attendances' => Attendance::with('user.profile')->whereProjectId($this->project->id)->paginate(10, pageName: 'attendance-page'),
-            'leaves' => Leave::with('user.profile')->whereProjectId(null)->paginate(10, pageName: 'leave-page'),
+            'leaves' => Leave::with('user.profile')->whereProjectId($this->project->id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->paginate(10, pageName: 'leave-page'),
             'projects' => [],
-            'users' => $users,
             'listDates' => $listDates,
         ]);
     }

@@ -33,10 +33,10 @@ class RowTable extends Component
         if ($property == 'uang_makan') {
             $this->attend = 0;
             $uang_makan = join("", explode(".", join("", explode(",", join("", explode(' ', $value))))));
-            foreach ($this->listDates as $value) {
-                if ($this->user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->first()) {
+            foreach ($this->listDates as $date) {
+                if ($this->user->leaves->where('start_date', '<=', $date)->where('to_date', '>=', $date)->where('type', 'Dinas Luar')->first()) {
                     $this->attend++;
-                } elseif ($this->user->attendances->contains('date', $value) && !$this->user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->whereIn('type', ['Sakit', 'Lainnya'])->first()) {
+                } elseif ($this->user->attendances->contains('date', $date) && !$this->user->leaves->where('start_date', '<=', $date)->where('to_date', '>=', $date)->whereIn('type', ['Sakit', 'Lainnya'])->first()) {
                     $this->attend++;
                 }
             }

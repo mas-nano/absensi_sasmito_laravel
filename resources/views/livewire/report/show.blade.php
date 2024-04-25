@@ -18,7 +18,7 @@
         </li>
     </x-slot:breadcrumbs>
 
-    <div x-data="{ show: 'attendance' }">
+    <div x-data="{ show: @entangle('show') }">
         <div class="flex justify-between items-center">
             <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Detail Laporan</p>
             <button class="py-1 px-2 bg-black dark:bg-[#a4a5f7] text-xs text-white dark:text-black rounded-lg"
