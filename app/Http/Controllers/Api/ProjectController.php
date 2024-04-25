@@ -56,7 +56,7 @@ class ProjectController extends Controller
         $user->load(['attendances' => function ($query) use ($request) {
             $query->whereBetween('created_at', [Carbon::parse(date('Y') . '-' . $request->query('month', date('m')) . '-01'), Carbon::parse(date('Y') . '-' . $request->query('month', date('m')) . '-01')->addMonth()]);
         }, 'leaves' => function ($query) use ($request) {
-            $query->whereBetween('start_date', [Carbon::parse(date('Y') . '-' . $request->query('month', date('m')) . '-01'), Carbon::parse(date('Y') . '-' . $request->query('month', date('m')) . '-01')->addMonth()]);
+            $query->whereBetween('start_date', [Carbon::parse(date('Y') . '-' . $request->query('month', date('m')) . '-01'), Carbon::parse(date('Y') . '-' . $request->query('month', date('m')) . '-01')->addMonth()])->where('status', 2);
         }]);
         return $this->responseSuccessWithData('data user', $user);
     }
