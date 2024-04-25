@@ -41,7 +41,7 @@ class Show extends Component
         $users = User::with(['profile', 'attendances' => function ($query) {
             $query->where('project_id', $this->project->id)->where('date', '>=', $this->dates ? $this->dates[0] : Carbon::now()->format('Y-m-01'))->where('date', '<=',  $this->dates ? $this->dates[1] : Carbon::now()->format('Y-m-t'));
         }, 'leaves' => function ($query) {
-            $query->where('project_id', $this->project->id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya']);
+            $query->where('project_id', $this->project->id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2);
         }])->where('project_id', $this->project->id)->where('role_id', '!=', 2)->get();
 
         $listDates = [];
