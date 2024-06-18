@@ -2,28 +2,36 @@
 
 namespace App\Livewire\Position;
 
+use App\Models\Permission;
 use App\Models\Position;
+use DB;
 use Illuminate\Validation\Rule;
-use LivewireUI\Modal\ModalComponent;
+use Livewire\Component;
 use Toaster;
 
-class Edit extends ModalComponent
+class Edit extends Component
 {
     public ?Position $position;
 
     public $name;
+
+    public $permission = [];
 
     public function mount(Position $position)
     {
         $this->position = $position;
 
         $this->name = $position->name;
+
+        foreach ($position->permissions->pluck('id')->toArray() as $p) {
+            $this->permission[$p] = true;
+        };
     }
 
     public function rules()
     {
         return [
-            'name' => ['required', Rule::unique('positions')->ignore($this->position->id)]
+            'name' => ['required', Rule::unique('positions')->ignore($this->position->id)],
         ];
     }
 
@@ -36,21 +44,29 @@ class Edit extends ModalComponent
 
     public function render()
     {
-        return view('livewire.position.edit');
+        return view('livewire.position.edit', [
+            'permissions' => Permission::all()
+        ]);
     }
 
     public function save()
     {
         $this->validate();
-
+        DB::beginTransaction();
         try {
             $this->position->name = $this->name;
             $this->position->save();
 
+            $this->permission = array_filter($this->permission, fn ($value) => $value === true);
+
+            $this->position->permissions()->sync(array_keys($this->permission));
+
+            DB::commit();
+
             Toaster::success('Jabatan berhasil diubah');
-            $this->dispatch('refresh-list-position');
-            $this->closeModal();
+            $this->redirectRoute('position.index', navigate: true);
         } catch (\Throwable $th) {
+            DB::rollBack();
             Toaster::error('Gagal simpan. Coba beberapa saat lagi');
         }
     }

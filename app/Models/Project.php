@@ -20,4 +20,14 @@ class Project extends Model
     {
         return $this->hasMany(Leave::class, 'project_id');
     }
+
+    public function overtimeLimit(): HasMany
+    {
+        return $this->hasMany(OvertimeLimit::class, 'project_id');
+    }
+
+    public function overtimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'project_id');
+    }
 }

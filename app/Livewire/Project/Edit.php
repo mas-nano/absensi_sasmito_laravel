@@ -13,6 +13,10 @@ use Toaster;
 class Edit extends Component
 {
     use WithFileUploads, UploadFile;
+    protected $listeners = [
+        '$refresh'
+    ];
+
     public ?Project $project;
 
     #[Validate('nullable|image|max:4096', as: 'Foto Proyek')]

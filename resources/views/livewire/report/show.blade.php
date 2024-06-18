@@ -73,17 +73,17 @@
                                 <th colspan="{{ count($listDates) + 2 }}"
                                     class="text-center dark:text-white text-black text-lg print:dark:text-black">
                                     Periode:
-                                    {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
+                                    {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
                                     -
-                                    {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
+                                    {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
                                 </th>
                             @else
                                 <th colspan="{{ count($listDates) + 5 }}"
                                     class="text-center dark:text-white text-black text-lg print:dark:text-black">
                                     Periode:
-                                    {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
+                                    {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
                                     -
-                                    {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
+                                    {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
                                 </th>
                             @endif
                         </tr>
@@ -97,7 +97,7 @@
                             @endfor
                             <th class="py-3 font-normal ">Hari</th>
                             @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
-                                <th class="py-3 font-normal ">Uang Makan</th>
+                                <th class="py-3 font-normal ">Uang Makan 1x</th>
                                 <th class="py-3 font-normal ">Jumlah</th>
                                 <th class="py-3 font-normal ">Tanda Tangan</th>
                             @endif
@@ -119,7 +119,7 @@
                             <tr>
                                 <td colspan="{{ count($listDates) + 5 }}"
                                     class="dark:text-white text-black print:dark:text-black text-xs">Surabaya,
-                                    {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->format('j F Y') }}
+                                    {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
                                 </td>
                             </tr>
                             <tr>

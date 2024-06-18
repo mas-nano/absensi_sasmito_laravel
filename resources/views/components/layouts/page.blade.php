@@ -25,6 +25,12 @@
                 <i class="ph-fill ph-files text-xl text-black dark:text-white"></i>
                 <p class="text-black dark:text-white text-sm">Perizinan</p>
             </a>
+            <a href="{{ route('overtime.index') }}" wire:navigate
+                class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('leave*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
+                <div class="h-4 w-4"></div>
+                <i class="ph-fill ph-person-simple-run text-xl text-black dark:text-white"></i>
+                <p class="text-black dark:text-white text-sm">Lembur</p>
+            </a>
             @if (auth()->user()->role_id == 1)
                 <a href="{{ route('announcement.index') }}" wire:navigate
                     class="flex space-x-1 items-center p-2 rounded-lg hover:bg-[#1C1C1C0D] hover:dark:bg-[#FFFFFF1A] {{ Route::is('announcement*') ? 'bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A]' : '' }}">
@@ -152,7 +158,7 @@
         <header
             class="p-5 flex justify-between items-center border-b-[1px] border-b-[[#1C1C1C1A] dark:border-b-[#FFFFFF1A]">
             <div class="flex">
-                <button x-on:click="sidebar = !sidebar">
+                <button x-on:click="sidebar = !sidebar" class="md:hidden">
                     <i class="ph ph-list text-xl text-black dark:text-white"></i>
                 </button>
                 <ol class="flex space-x-2">

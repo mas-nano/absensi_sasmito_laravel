@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -74,5 +75,20 @@ class User extends Authenticatable
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class, 'position_id');
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'user_permissions');
+    }
+
+    public function hasPermission($permission): bool
+    {
+        return $this->permissions()->where('name', $permission)->exists();
+    }
+
+    public function overtimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'user_id');
     }
 }

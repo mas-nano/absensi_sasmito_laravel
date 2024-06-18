@@ -100,7 +100,7 @@
                         <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="md:col-span-2" wire:key="{{ rand() }}">
+                <div class="md:col-span-2" wire:ignore>
                     <label for="address" class="text-sm block dark:text-white text-black mb-2">Titik Lokasi
                         Proyek</label>
                     <div x-ref="map" class="h-96 w-full"></div>
@@ -111,6 +111,7 @@
             </div>
         </div>
     </form>
+    @livewire('project.table-overtime', ['project_id' => $project->id, 'overtimeLimit' => $project->overtimeLimit])
     <livewire:project.table-employee :project="$project" />
 </x-page-layout>
 

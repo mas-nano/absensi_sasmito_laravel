@@ -50,6 +50,14 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/', 'Index')->name('index');
         Route::get('/{project:uuid}', 'Detail')->name('show');
     });
+    Route::prefix('/position')->namespace('App\Livewire\Position')->name('position.')->group(function () {
+        Route::get('/', 'Index')->name('index');
+        Route::get('/create', 'Create')->name('create');
+        Route::get('/{position:uuid}/edit', 'Edit')->name('edit');
+    });
+    Route::prefix('/overtime')->namespace('App\Livewire\Overtime')->name('overtime.')->group(function () {
+        Route::get('/', 'Index')->name('index');
+        Route::get('/create', 'Create')->name('create');
+    });
     Route::get('/setting', App\Livewire\Setting\Index::class)->name('setting.index');
-    Route::get('/position', App\Livewire\Position\Index::class)->name('position.index');
 });
