@@ -56,7 +56,7 @@
                         <td class="py-3 font-normal">{{ $item->project->name }}</td>
                         <td class="py-3 flex space-x-2">
                             <button
-                                wire:click="$dispatch('openModal', {component:'position.delete', arguments:{position:{{ $item->id }}}})"><i
+                                wire:click="$dispatch('openModal', {component:'overtime.delete', arguments:{overtime_id:{{ $item->id }}}})"><i
                                     class="ph-duotone ph-trash text-red-500 text-lg"></i></button>
                         </td>
                     </tr>

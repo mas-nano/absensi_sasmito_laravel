@@ -24,6 +24,7 @@ class Edit extends Component
     public $phone_number = '';
     public $username = '';
     public $address = '';
+    public $lunch_price = '';
     public $photo = null;
     public $currentPhoto = null;
 
@@ -36,6 +37,7 @@ class Edit extends Component
         $this->phone_number = $profile->phone_number;
         $this->username = $profile->user->username;
         $this->address = $profile->address;
+        $this->lunch_price = $profile->lunch_price;
         $this->currentPhoto = $profile->profile_picture;
         $this->profile = $profile;
     }
@@ -49,6 +51,7 @@ class Edit extends Component
             'phone_number' => 'required|phone:ID',
             'username' => ['required', Rule::unique('users')->ignore($this->profile->user)],
             'address' => 'required|min:12',
+            'lunch_price' => 'required|numeric',
             'photo' => 'nullable|image|max:2048'
         ];
     }
@@ -60,6 +63,7 @@ class Edit extends Component
             'phone_number' => 'Nomor Telepon',
             'username' => 'Username',
             'address' => 'Alamat',
+            'lunch_price' => 'Uang Makan 1x',
             'photo' => 'Foto Profil'
         ];
     }
@@ -87,6 +91,7 @@ class Edit extends Component
             $this->profile->last_title = $validated['last_title'];
             $this->profile->phone_number = $phone_number->formatE164();
             $this->profile->address = $validated['address'];
+            $this->profile->lunch_price = $validated['lunch_price'];
             $this->profile->user_id = $user->id;
             if ($this->photo != null && !is_string($this->photo)) {
                 if ($this->profile->profile_picture !== null && Storage::exists($this->profile->profile_picture)) {

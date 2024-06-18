@@ -101,6 +101,17 @@
                     @enderror
                 </div>
                 <div class="">
+                    <label for="lunch_price" class="text-sm block dark:text-white text-black mb-2">Uang Makan 1x</label>
+                    <input type="text" name="lunch_price" id="lunch_price" wire:model="lunch_price"
+                        placeholder="Uang Makan 1x"
+                        class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
+                    @error('lunch_price')
+                        <span class="text-xs text-red-500">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="">
+                </div>
+                <div class="">
                     <label for="phone_number" class="text-sm block dark:text-white text-black mb-2">Reset HP</label>
                     <button type="button"
                         class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg"

@@ -34,6 +34,9 @@ class Create extends Component
     #[Validate('required|string|min:12', as: 'Alamat')]
     public $address = null;
 
+    #[Validate('required|numeric', as: 'Uang Makan 1x')]
+    public $lunch_price = null;
+
     #[Validate('nullable|image|max:2024', as: 'Foto')]
     public $photo = null;
 
@@ -56,13 +59,13 @@ class Create extends Component
             $user->save();
 
             $phone_number = new PhoneNumber($validated['phone_number'], 'ID');
-
             $profile->name = $validated['name'];
             $profile->first_title = $validated['first_title'];
             $profile->last_title = $validated['last_title'];
             $profile->phone_number = $phone_number->formatE164();
             $profile->address = $validated['address'];
             $profile->user_id = $user->id;
+            $profile->lunch_price = $validated['lunch_price'];
             if ($this->photo != null) {
                 $profile->profile_picture = $this->upload('photo_profile', $this->photo);
             }

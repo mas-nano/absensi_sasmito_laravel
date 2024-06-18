@@ -11,8 +11,7 @@
         {{ $attend }}</td>
     @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
         <td class="py-3 print:py-0 font-normal min-w-16 max-w-16 text-nowrap">
-            <input type="text" wire:model.blur="uang_makan"
-                class="w-full inline px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black print:bg-transparent print:dark:bg-transparent  print:dark:text-black">
+            Rp{{ number_format($user->profile->lunch_price, 0, '.', '.') }}
         </td>
         <td class="py-3 print:py-0 font-normal min-w-20">
             <p class="">Rp {{ $total_uang_makan }}</p>

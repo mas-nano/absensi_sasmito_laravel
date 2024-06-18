@@ -96,6 +96,7 @@ class Create extends Component
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
+            dd($th);
             Toaster::error('Lembur gagal ditambahkan');
         }
     }
