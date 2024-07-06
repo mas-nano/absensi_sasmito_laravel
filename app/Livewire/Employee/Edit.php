@@ -121,7 +121,9 @@ class Edit extends Component
             }
             $this->profile->save();
 
-            $user->permissions()->sync(array_keys($validated['permissions']));
+            $permissionSelected = array_filter($validated['permissions'], fn ($permission) => $permission == true);
+
+            $user->permissions()->sync(array_keys($permissionSelected));
             $projectSelected = array_filter($validated['projects'], fn ($project) => $project['id'] != $user->project_id);
             $user->projects()->sync(array_column($projectSelected, 'id'));
             DB::commit();
