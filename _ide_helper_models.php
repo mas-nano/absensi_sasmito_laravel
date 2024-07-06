@@ -111,6 +111,80 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Overtime
+ *
+ * @property int $id
+ * @property string $date
+ * @property int $user_id
+ * @property int $project_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Project $project
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Overtime whereUserId($value)
+ */
+	class Overtime extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\OvertimeLimit
+ *
+ * @property int $id
+ * @property string $check_out_time_limit
+ * @property int $multiply
+ * @property int $project_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Project $project
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit query()
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereCheckOutTimeLimit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereMultiply($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereUpdatedAt($value)
+ */
+	class OvertimeLimit extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Permission
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $label
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Permission newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Permission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Permission query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Permission whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Permission whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Permission whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Permission whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Permission whereUpdatedAt($value)
+ */
+	class Permission extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Position
  *
  * @property int $id
@@ -118,6 +192,8 @@ namespace App\Models{
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
+ * @property-read int|null $permissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|Position newModelQuery()
@@ -147,6 +223,7 @@ namespace App\Models{
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $lunch_price
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newQuery()
@@ -156,6 +233,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereFirstTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereLastTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Profile whereLunchPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile wherePhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereProfilePicture($value)
@@ -181,6 +259,12 @@ namespace App\Models{
  * @property string|null $check_out_time
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Leave> $leaves
+ * @property-read int|null $leaves_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OvertimeLimit> $overtimeLimit
+ * @property-read int|null $overtime_limit_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Overtime> $overtimes
+ * @property-read int|null $overtimes_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
@@ -268,9 +352,15 @@ namespace App\Models{
  * @property-read int|null $leaves_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Overtime> $overtimes
+ * @property-read int|null $overtimes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
+ * @property-read int|null $permissions_count
  * @property-read \App\Models\Position|null $position
  * @property-read \App\Models\Profile|null $profile
  * @property-read \App\Models\Project|null $project
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
+ * @property-read int|null $projects_count
  * @property-read \App\Models\Role|null $role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count

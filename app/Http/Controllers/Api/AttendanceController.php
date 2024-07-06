@@ -57,6 +57,12 @@ class AttendanceController extends Controller
             return $this->responseSuccessWithData("Attendance Data", $data);
         }
 
+        if (!Auth::user()->hasPermission(['create-attendance', 'create-free-attendance'])) {
+            $data->put('canCheckIn', false);
+            $data->put('canCheckOut', false);
+            return $this->responseSuccessWithData("Attendance Data", $data);
+        }
+
         if ($attendance == null) {
             if ($project->check_in_time && $project->check_out_time) {
                 if ($now->gte(Carbon::parse($timeLimit)) && $now->lte(Carbon::parse($project->check_out_time))) {
@@ -118,7 +124,7 @@ class AttendanceController extends Controller
         $attendance->lng = $validated['lng'];
         $attendance->lat = $validated['lat'];
         if ($lastAttendance == null) {
-            if ($project->check_in_time && $project->check_out_time) {
+            if ($project->check_in_time && $project->check_out_time && !Auth::user()->hasPermission('create-free-attendance')) {
                 if ($now->gte(Carbon::parse($timeLimit)) && $now->lte(Carbon::parse($project->check_out_time))) {
                     if ($now->gte(Carbon::parse($project->check_in_time)->addMinutes($late)) && $validated['reason'] == null) {
                         return $this->responseError('Anda Terlambat. Isi Alasan', 403);
@@ -169,7 +175,7 @@ class AttendanceController extends Controller
             }
         } else {
             if ($lastAttendance->type == 'in') {
-                if ($project->check_out_time) {
+                if ($project->check_out_time && !Auth::user()->hasPermission('create-free-attendance')) {
                     if ($now->gt(Carbon::parse($timeLimit)) && $now->lt(Carbon::parse($project->check_out_time)) && $validated['reason'] == null) {
                         return $this->responseError('Anda Pulang Cepat. Isi Alasan', 403);
                     } else {

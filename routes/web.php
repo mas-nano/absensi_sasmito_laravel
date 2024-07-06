@@ -39,6 +39,8 @@ Route::middleware('auth:web')->group(function () {
     Route::prefix('/report')->name('report.')->namespace('App\Livewire\Report')->group(function () {
         Route::get('/', 'Index')->name('index');
         Route::get('/{project:uuid}', 'Show')->name('show');
+        Route::get('/{project:uuid}/attendance', 'Attendance')->name('attendance');
+        Route::get('/{project:uuid}/leave', 'Leave')->name('leave');
     });
     Route::prefix('/announcement')->name('announcement.')->namespace('App\Livewire\Announcement')->group(function () {
         Route::get('/', 'Index')->name('index');

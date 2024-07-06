@@ -4,6 +4,7 @@ namespace App\Livewire\Overtime;
 
 use App\Models\Overtime;
 use App\Models\User;
+use Auth;
 use DB;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
@@ -24,16 +25,16 @@ class Create extends Component
         return view('livewire.overtime.create', [
             'users' => User::query()
                 ->with('profile')
-                ->when(auth()->user()->hasPermission('view-own-project'), function ($query) {
-                    return $query->where('project_id', auth()->user()->project_id);
+                ->when(Auth::user()->hasPermission('view-own-project'), function ($query) {
+                    return $query->where('project_id', Auth::user()->project_id);
                 })
                 ->when(
-                    !auth()->user()->hasPermission('view-own-project') &&
-                        auth()->user()->hasPermission('view-other-project'),
+                    !Auth::user()->hasPermission('view-own-project') &&
+                        Auth::user()->hasPermission('view-other-project'),
                     function ($query) {
                         $projectArr = [];
-                        array_push($projectArr, auth()->user()->project_id);
-                        array_push($projectArr, ...auth()->user()->projects->pluck('id')->toArray());
+                        array_push($projectArr, Auth::user()->project_id);
+                        array_push($projectArr, ...Auth::user()->projects->pluck('id')->toArray());
                         $query->whereIn('project_id', $projectArr);
                     }
                 )

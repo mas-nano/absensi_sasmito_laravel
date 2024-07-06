@@ -4,6 +4,7 @@ namespace App\Livewire\Position;
 
 use App\Models\Permission;
 use App\Models\Position;
+use App\Models\User;
 use DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -60,6 +61,11 @@ class Edit extends Component
             $this->permission = array_filter($this->permission, fn ($value) => $value === true);
 
             $this->position->permissions()->sync(array_keys($this->permission));
+
+            $users = User::where('position_id', $this->position->id)->get();
+            foreach ($users as $user) {
+                $user->permissions()->sync(array_keys($this->permission));
+            }
 
             DB::commit();
 

@@ -18,7 +18,7 @@
         </li>
     </x-slot:breadcrumbs>
 
-    <div x-data="{ show: @entangle('show') }">
+    <div>
         <div class="flex justify-between items-center">
             <p class="py-1 px-2 text-sm font-semibold text-black dark:text-white">Detail Laporan</p>
             <button class="py-1 px-2 bg-black dark:bg-[#a4a5f7] text-xs text-white dark:text-black rounded-lg"
@@ -43,48 +43,23 @@
                     class=" px-3 py-2 w-72 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black"
                     date-picker>
             </div>
-            <div class="mt-5 overflow-x-auto" x-show="show=='attendance'">
+            <div class="mt-5 overflow-x-auto">
                 <table class="w-full print:visible print:top-0 print:left-0 print:absolute" id="table">
                     <thead>
                         <tr>
-                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
-                                <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center text-lg print:text-xl dark:text-white text-black print:dark:text-black">
-                                    Rekapitulasi
-                                    Absensi Staf</th>
-                            @else
-                            @endif
-                            <th colspan="{{ count($listDates) + 5 }}"
-                                class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
+                            <th colspan="{{ count($listDates) + 2 }}"
+                                class="text-center text-lg print:text-xl dark:text-white text-black print:dark:text-black">
                                 Rekapitulasi
-                                Uang
-                                Makan Staf</th>
+                                Absensi Staf</th>
                         </tr>
                         <tr>
-                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
-                                <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
-                                    Lokasi:
-                                    {{ $project->name }}</th>
-                            @else
-                            @endif
-                            <th colspan="{{ count($listDates) + 5 }}"
+                            <th colspan="{{ count($listDates) + 2 }}"
                                 class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
                                 Lokasi:
                                 {{ $project->name }}</th>
                         </tr>
                         <tr>
-                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
-                                <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center dark:text-white text-black text-lg print:dark:text-black">
-                                    Periode:
-                                    {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
-                                    -
-                                    {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
-                                </th>
-                            @else
-                            @endif
-                            <th colspan="{{ count($listDates) + 5 }}"
+                            <th colspan="{{ count($listDates) + 2 }}"
                                 class="text-center dark:text-white text-black text-lg print:dark:text-black">
                                 Periode:
                                 {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
@@ -101,10 +76,6 @@
                                 </th>
                             @endfor
                             <th class="py-3 font-normal ">Hari</th>
-                            @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
-                            @endif
-                            <th class="py-3 font-normal ">Uang Makan 1x</th>
-                            <th class="py-3 font-normal ">Jumlah</th>
                             <th class="py-3 font-normal ">Tanda Tangan</th>
                         </tr>
                         <tr>
@@ -112,27 +83,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
-                            @php
-                                $totalMultiply = array_reduce($user->reports, fn($a, $b) => $a + $b['multiply'], 0);
-                            @endphp
+                        @foreach ($project->users as $user)
                             <tr
                                 class="text-black dark:text-white print:dark:text-black text-xs print:text-base print:odd:bg-white print:even:bg-slate-50 print:odd:dark:bg-white print:even:dark:bg-slate-50">
-                                <td class="py-3 print:py-0 font-normal">{{ $user->profile->name }}</td>
+                                <td class="py-3 print:py-0 font-normal">{{ $user->name }}</td>
                                 @foreach ($user->reports as $report)
-                                    <td>{{ $report['multiply'] }}</td>
+                                    <td>{{ $report['attend'] }}</td>
                                 @endforeach
-                                @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
-                                @endif
                                 <td class="py-3 print:py-0 font-normal min-w-16 max-w-16 text-nowrap">
-                                    {{ $totalMultiply }}</td>
-                                <td class="py-3 print:py-0 font-normal min-w-16 max-w-16 text-nowrap">
-                                    Rp{{ number_format($user->profile->lunch_price, 0, '.', '.') }}
-                                </td>
-                                <td class="py-3 print:py-0 font-normal min-w-20">
-                                    <p class="">Rp
-                                        {{ number_format($totalMultiply * $user->profile->lunch_price, 0, '.', '.') }}
-                                    </p>
+                                    {{ array_reduce($user->reports, fn($carry, $item) => $carry + $item['attend'], 0) }}
                                 </td>
                                 <td class="py-3 print:py-0 font-normal"></td>
                             </tr>

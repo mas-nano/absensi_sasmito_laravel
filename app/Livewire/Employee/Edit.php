@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Employee;
 
+use App\Models\Permission;
 use App\Models\Profile;
+use App\Models\Project;
 use App\Models\User;
 use App\Traits\UploadFile;
+use DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -27,10 +30,11 @@ class Edit extends Component
     public $lunch_price = '';
     public $photo = null;
     public $currentPhoto = null;
+    public $permissions = [];
+    public $projects = [];
 
     public function mount(Profile $profile): void
     {
-        $profile->load('user');
         $this->name = $profile->name;
         $this->first_title = $profile->first_title;
         $this->last_title = $profile->last_title;
@@ -40,6 +44,16 @@ class Edit extends Component
         $this->lunch_price = $profile->lunch_price;
         $this->currentPhoto = $profile->profile_picture;
         $this->profile = $profile;
+        $this->profile->user->permissions()->each(function ($permission) {
+            $this->permissions[$permission->id] = true;
+        });
+        $this->profile->user->projects()->each(function ($project) {
+            $this->projects[] = [
+                'temp_id' => rand(),
+                'id' => $project->id,
+                'name' => $project->name
+            ];
+        });
     }
 
     public function rules()
@@ -52,7 +66,9 @@ class Edit extends Component
             'username' => ['required', Rule::unique('users')->ignore($this->profile->user)],
             'address' => 'required|min:12',
             'lunch_price' => 'required|numeric',
-            'photo' => 'nullable|image|max:2048'
+            'photo' => 'nullable|image|max:2048',
+            'permissions' => 'array',
+            'projects' => 'array'
         ];
     }
 
@@ -70,7 +86,10 @@ class Edit extends Component
 
     public function render()
     {
-        return view('livewire.employee.edit');
+        return view('livewire.employee.edit', [
+            'permissionList' => Permission::all(),
+            'projectList' => Project::all()
+        ]);
     }
 
     public function save()
@@ -79,6 +98,7 @@ class Edit extends Component
 
         $user = $this->profile->user;
 
+        DB::beginTransaction();
         try {
             $user->name = $validated['name'];
             $user->username = strtolower($validated['username']);
@@ -101,9 +121,14 @@ class Edit extends Component
             }
             $this->profile->save();
 
+            $user->permissions()->sync(array_keys($validated['permissions']));
+            $projectSelected = array_filter($validated['projects'], fn ($project) => $project['id'] != $user->project_id);
+            $user->projects()->sync(array_column($projectSelected, 'id'));
+            DB::commit();
             Toaster::success('Pegawai berhasil diubah');
             return $this->redirectRoute('employee.index', navigate: true);
         } catch (\Throwable $th) {
+            DB::rollBack();
             Toaster::error('Terjadi kesalahan pada sistem, coba ulang beberapa saat lagi ' . $th->getMessage());
         }
     }

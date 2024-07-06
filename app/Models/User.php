@@ -84,11 +84,19 @@ class User extends Authenticatable
 
     public function hasPermission($permission): bool
     {
+        if (is_array($permission)) {
+            return $this->permissions()->whereIn('name', $permission)->exists();
+        }
         return $this->permissions()->where('name', $permission)->exists();
     }
 
     public function overtimes(): HasMany
     {
         return $this->hasMany(Overtime::class, 'user_id');
+    }
+
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'user_projects');
     }
 }
