@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Project;
 
+use App\Models\OvertimeLimit;
+use DB;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
+use Toaster;
 
 class TableOvertime extends Component
 {
@@ -26,5 +29,21 @@ class TableOvertime extends Component
     public function render(): View
     {
         return view('livewire.project.table-overtime');
+    }
+
+    public function removeTimeLimit($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            OvertimeLimit::where('id', $id)->delete();
+            $this->dispatch('$refresh')->to(Edit::class);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Toaster::error('Gagal hapus. Silakan coba beberapa saat lagi');
+            //throw $th;
+        }
     }
 }

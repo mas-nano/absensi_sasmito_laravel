@@ -27,7 +27,7 @@
                     <td class="py-3 font-normal">{{ $item->multiply }}</td>
                     @if (!request()->routeIs('project.show'))
                         <td class="py-3">
-                            <button wire:click="removeTimeLimit('{{ $item->id }}')"><i
+                            <button wire:click="removeTimeLimit({{ $item->id }})"><i
                                     class="ph-duotone ph-trash text-red-500 text-lg"></i></button>
                         </td>
                     @endif
