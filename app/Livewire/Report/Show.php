@@ -103,41 +103,30 @@ class Show extends Component
                 $attendanceOut = $user->attendances->where('date', $value)->where('type', 'out')->first();
                 if ($attendanceIn && $attendanceOut) {
                     $multiply = $overtimeLimits->first()?->multiply ?? 0;
-                    $overtimeExist = Overtime::query()
-                        ->where('user_id', $user->id)
-                        ->where('project_id', $this->project->id)
-                        ->where('date', $value)
-                        ->first();
-                    if ($overtimeExist) {
-                        foreach ($overtimeLimits as $key => $overtimeLimit) {
-                            if ($timeLimit > '00:00') {
+                    // $overtimeExist = Overtime::query()
+                    //     ->where('user_id', $user->id)
+                    //     ->where('project_id', $this->project->id)
+                    //     ->where('date', $value)
+                    //     ->first();
+
+                    // if ($overtimeExist) {
+                    foreach ($overtimeLimits as $key => $overtimeLimit) {
+                        if ($timeLimit > '00:00') {
+                            if (
+                                Carbon::parse($overtimeLimit->check_out_time_limit) <=
+                                Carbon::parse($timeLimit) &&
+                                Carbon::parse($overtimeLimit->check_out_time_limit) >=
+                                Carbon::parse('00:00')
+                            ) {
                                 if (
-                                    Carbon::parse($overtimeLimit->check_out_time_limit) <=
-                                    Carbon::parse($timeLimit) &&
-                                    Carbon::parse($overtimeLimit->check_out_time_limit) >=
-                                    Carbon::parse('00:00')
+                                    Carbon::parse($attendanceOut->created_at) <=
+                                    Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit)->addDay() ||
+                                    $overtimeLimits->count() ==
+                                    $key + 1
                                 ) {
-                                    if (
-                                        Carbon::parse($attendanceOut->created_at) <=
-                                        Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit)->addDay() ||
-                                        $overtimeLimits->count() ==
-                                        $key + 1
-                                    ) {
-                                        // $console->writeln('tengah-tengah ' . $o->multiply . ' ' . $o->id);
-                                        $multiply = $overtimeLimit->multiply;
-                                        break;
-                                    }
-                                } else {
-                                    if (
-                                        Carbon::parse($attendanceOut->created_at) <=
-                                        Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit) ||
-                                        $overtimeLimits->count() ==
-                                        $key + 1
-                                    ) {
-                                        // $console->writeln('ga di tengah ' . $o->multiply . ' ' . $o->id);
-                                        $multiply = $overtimeLimit->multiply;
-                                        break;
-                                    }
+                                    // $console->writeln('tengah-tengah ' . $o->multiply . ' ' . $o->id);
+                                    $multiply = $overtimeLimit->multiply;
+                                    break;
                                 }
                             } else {
                                 if (
@@ -146,13 +135,25 @@ class Show extends Component
                                     $overtimeLimits->count() ==
                                     $key + 1
                                 ) {
-                                    // $console->writeln('kur den timelimit ' . $o->multiply . ' ' . $o->id);
+                                    // $console->writeln('ga di tengah ' . $o->multiply . ' ' . $o->id);
                                     $multiply = $overtimeLimit->multiply;
                                     break;
                                 }
                             }
+                        } else {
+                            if (
+                                Carbon::parse($attendanceOut->created_at) <=
+                                Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit) ||
+                                $overtimeLimits->count() ==
+                                $key + 1
+                            ) {
+                                // $console->writeln('kur den timelimit ' . $o->multiply . ' ' . $o->id);
+                                $multiply = $overtimeLimit->multiply;
+                                break;
+                            }
                         }
                     }
+                    // }
                 }
 
                 if ($user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->first()) {
