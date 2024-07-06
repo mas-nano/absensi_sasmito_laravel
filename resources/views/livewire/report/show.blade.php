@@ -47,13 +47,6 @@
                 <table class="w-full print:visible print:top-0 print:left-0 print:absolute" id="table">
                     <thead>
                         <tr>
-                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
-                                <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center text-lg print:text-xl dark:text-white text-black print:dark:text-black">
-                                    Rekapitulasi
-                                    Absensi Staf</th>
-                            @else
-                            @endif
                             <th colspan="{{ count($listDates) + 5 }}"
                                 class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
                                 Rekapitulasi
@@ -61,29 +54,12 @@
                                 Makan Staf</th>
                         </tr>
                         <tr>
-                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
-                                <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
-                                    Lokasi:
-                                    {{ $project->name }}</th>
-                            @else
-                            @endif
                             <th colspan="{{ count($listDates) + 5 }}"
                                 class="text-center dark:text-white text-lg print:text-xl text-black print:dark:text-black">
                                 Lokasi:
                                 {{ $project->name }}</th>
                         </tr>
                         <tr>
-                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
-                                <th colspan="{{ count($listDates) + 2 }}"
-                                    class="text-center dark:text-white text-black text-lg print:dark:text-black">
-                                    Periode:
-                                    {{ \Carbon\Carbon::parse($dates[0])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
-                                    -
-                                    {{ \Carbon\Carbon::parse($dates[1])->locale('id_ID')->setTimeZone('Asia/Jakarta')->isoFormat('D MMMM Y') }}
-                                </th>
-                            @else
-                            @endif
                             <th colspan="{{ count($listDates) + 5 }}"
                                 class="text-center dark:text-white text-black text-lg print:dark:text-black">
                                 Periode:
@@ -101,8 +77,6 @@
                                 </th>
                             @endfor
                             <th class="py-3 font-normal ">Hari</th>
-                            @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
-                            @endif
                             <th class="py-3 font-normal ">Uang Makan 1x</th>
                             <th class="py-3 font-normal ">Jumlah</th>
                             <th class="py-3 font-normal ">Tanda Tangan</th>
