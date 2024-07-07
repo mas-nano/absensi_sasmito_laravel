@@ -10,6 +10,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Auth;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -106,14 +107,14 @@ class AttendanceController extends Controller
         $validated = $validator->validated();
 
         $project = Project::find(Auth::user()->project_id);
-        $now = Carbon::now();
+        $now = CarbonImmutable::now();
         $timeLimit = Setting::where('field', 'time')->first()->value ?? '00:00';
         $late = Setting::where('field', 'late')->first()->value ?? 0;
 
         if ($now->gte(Carbon::parse($timeLimit))) {
-            $lastAttendance = Attendance::where('user_id', $request->user()->id)->where('created_at', '>=', Carbon::parse($timeLimit))->latest()->first();
+            $lastAttendance = Attendance::where('user_id', $request->user()->id)->where('date', Carbon::now()->toDateString())->latest()->first();
         } else {
-            $lastAttendance = Attendance::where('user_id', $request->user()->id)->where('created_at', '>=', Carbon::parse($timeLimit)->subDay())->where('created_at', '<=', Carbon::parse($timeLimit))->latest()->first();
+            $lastAttendance = Attendance::where('user_id', $request->user()->id)->where('date', Carbon::now()->subDay()->toDateString())->latest()->first();
         }
 
         if ($this->calculateDistance($validated['lat'], $validated['lng'], $project->lat, $project->lng) > 20) {
@@ -170,6 +171,11 @@ class AttendanceController extends Controller
                     $attendance->status = 'Tepat Waktu';
                 }
             } else {
+                if (Carbon::parse($timeLimit) > Carbon::now() && Carbon::parse('00:00') <= Carbon::now()) {
+                    $attendance->date = Carbon::now()->toDateString();
+                } else {
+                    $attendance->date = Carbon::now()->subDay()->toDateString();
+                }
                 $attendance->type = 'in';
                 $attendance->status = 'Tepat Waktu';
             }
@@ -200,6 +206,11 @@ class AttendanceController extends Controller
                         }
                     }
                 } else {
+                    if (Carbon::parse($timeLimit) > Carbon::now() && Carbon::parse('00:00') <= Carbon::now()) {
+                        $attendance->date = Carbon::now()->toDateString();
+                    } else {
+                        $attendance->date = Carbon::now()->subDay()->toDateString();
+                    }
                     $attendance->type = 'out';
                     $attendance->status = 'Tepat Waktu';
                 }
