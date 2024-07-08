@@ -172,9 +172,9 @@ class AttendanceController extends Controller
                 }
             } else {
                 if (Carbon::parse($timeLimit) > Carbon::now() && Carbon::parse('00:00') <= Carbon::now()) {
-                    $attendance->date = Carbon::now()->toDateString();
-                } else {
                     $attendance->date = Carbon::now()->subDay()->toDateString();
+                } else {
+                    $attendance->date = Carbon::now()->toDateString();
                 }
                 $attendance->type = 'in';
                 $attendance->status = 'Tepat Waktu';
