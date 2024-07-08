@@ -65,7 +65,7 @@ class AttendanceController extends Controller
         }
 
         if ($attendance == null) {
-            if ($project->check_in_time && $project->check_out_time) {
+            if ($project->check_in_time && $project->check_out_time && !Auth::user()->hasPermission('create-free-attendance')) {
                 if ($now->gte(Carbon::parse($timeLimit)) && $now->lte(Carbon::parse($project->check_out_time))) {
                     $data->put('canCheckIn', true);
                     $data->put('canCheckOut', false);
