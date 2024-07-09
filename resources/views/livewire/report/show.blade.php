@@ -86,9 +86,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $total = 0;
+                        @endphp
                         @foreach ($users as $user)
                             @php
                                 $totalMultiply = array_reduce($user->reports, fn($a, $b) => $a + $b['multiply'], 0);
+                                $total += $totalMultiply * $user->profile->lunch_price;
                             @endphp
                             <tr
                                 class="text-black dark:text-white print:dark:text-black text-xs print:text-base print:odd:bg-white print:even:bg-slate-50 print:odd:dark:bg-white print:even:dark:bg-slate-50">
@@ -101,7 +105,7 @@
                                 <td class="py-3 print:py-0 font-normal min-w-16 max-w-16 text-nowrap">
                                     {{ $totalMultiply }}</td>
                                 <td class="py-3 print:py-0 font-normal min-w-16 max-w-16 text-nowrap">
-                                    Rp{{ number_format($user->profile->lunch_price, 0, '.', '.') }}
+                                    Rp&nbsp;{{ number_format($user->profile->lunch_price, 0, '.', '.') }}
                                 </td>
                                 <td class="py-3 print:py-0 font-normal min-w-20">
                                     <p class="">Rp
@@ -111,6 +115,16 @@
                                 <td class="py-3 print:py-0 font-normal"></td>
                             </tr>
                         @endforeach
+                        <tr
+                            class="text-black dark:text-white print:dark:text-black text-xs print:text-base print:odd:bg-white print:even:bg-slate-50 print:odd:dark:bg-white print:even:dark:bg-slate-50">
+                            <td colspan="{{ count($listDates) + 3 }}"
+                                class="text-right py-3 print:py-0 font-normal min-w-16 max-w-16 text-nowrap">
+                                Total:&nbsp;
+                            </td>
+                            <td class="py-3 print:py-0 font-normal">
+                                Rp {{ number_format($total, 0, '.', '.') }}
+                            </td>
+                        </tr>
                     </tbody>
                     <tfoot>
                         @if (auth()->user()->role_id != 1 && auth()->user()->role_id != 3)
