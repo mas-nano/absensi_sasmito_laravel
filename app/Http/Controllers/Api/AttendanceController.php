@@ -43,13 +43,21 @@ class AttendanceController extends Controller
         $timeLimit = Setting::where('field', 'time')->first()->value ?? '00:00';
         $now = Carbon::now();
         $project = Project::find($request->user()->project_id);
-        // $attendance = null;
-        $attendance = Attendance::where('user_id', $request->user()->id)->where('date', $now->toDateString())->latest()->first();
-        // if ($now->gte(Carbon::parse($timeLimit))) {
-        //     $attendance = Attendance::where('user_id', $request->user()->id)->where('created_at', '>=', Carbon::parse($timeLimit))->latest()->first();
-        // } else {
-        //     $attendance = Attendance::where('user_id', $request->user()->id)->where('created_at', '>=', Carbon::parse($timeLimit)->subDay())->where('created_at', '<=', Carbon::parse($timeLimit))->latest()->first();
-        // }
+        $attendance = null;
+        // $attendance = Attendance::where('user_id', $request->user()->id)->where('date', $now->toDateString())->latest()->first();
+        if ($now->gte(Carbon::parse($timeLimit))) {
+            $attendance = Attendance::query()
+                ->where('user_id', $request->user()->id)
+                ->where('date', $now->toDateString())
+                ->latest()
+                ->first();
+        } else {
+            $attendance = Attendance::query()
+                ->where('user_id', $request->user()->id)
+                ->where('date', Carbon::now()->subDay()->toDateString())
+                ->latest()
+                ->first();
+        }
 
         $todayLeave = Leave::where('user_id', $request->user()->id)->where('start_date', '<=', $now->toDateString())->where('to_date', '>=', $now->toDateString())->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2)->latest()->first();
         if ($todayLeave) {
