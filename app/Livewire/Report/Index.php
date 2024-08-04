@@ -22,9 +22,10 @@ class Index extends Component
             })
             ->when(
                 !Auth::user()->hasPermission('view-own-project') &&
-                    Auth::user()->hasPermission('view-other-project'),
+                Auth::user()->hasPermission('view-other-project'),
                 function ($query) {
-                    array_push($projectArr, Auth::user()->project_id);
+                    $projectArr = [];
+                    $projectArr[] = Auth::user()->project_id;
                     array_push($projectArr, ...Auth::user()->projects->pluck('id')->toArray());
                     $query->whereIn('id', $projectArr);
                 }

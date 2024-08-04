@@ -29,7 +29,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseValidation($validator->errors());
+            return $this->responseValidation($validator->errors()->first());
         }
         $validated = $validator->validated();
 
