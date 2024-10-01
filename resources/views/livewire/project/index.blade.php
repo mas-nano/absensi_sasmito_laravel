@@ -57,6 +57,6 @@
                 </div>
             @endforelse
         </div>
-        {{ $projects->links('vendor.pagination.tailwind') }}
+        {{ $projects->links('vendor.livewire.tailwind') }}
     </div>
 </x-page-layout>

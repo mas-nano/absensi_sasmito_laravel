@@ -14,15 +14,23 @@ class Index extends Component
 
     public $search;
 
+    public function updated($attribute)
+    {
+        if ($attribute == 'search') {
+            $this->resetPage();
+        }
+    }
+
     public function render()
     {
         $projects = Project::query()
+            ->where('name', 'ilike', '%' . $this->search . '%')
             ->when(Auth::user()->hasPermission('view-own-project'), function ($query) {
                 return $query->where('id', Auth::user()->project_id);
             })
             ->when(
                 !Auth::user()->hasPermission('view-own-project') &&
-                Auth::user()->hasPermission('view-other-project'),
+                    Auth::user()->hasPermission('view-other-project'),
                 function ($query) {
                     $projectArr = [];
                     $projectArr[] = Auth::user()->project_id;

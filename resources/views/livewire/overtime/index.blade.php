@@ -67,6 +67,6 @@
                 @endforelse
             </tbody>
         </table>
-        {{ $overtimes->links('vendor.pagination.tailwind') }}
+        {{ $overtimes->links('vendor.livewire.tailwind') }}
     </div>
 </x-page-layout>

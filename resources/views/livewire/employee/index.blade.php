@@ -63,6 +63,6 @@
                 </div>
             @endforelse
         </div>
-        {{ $employees->links('vendor.pagination.tailwind') }}
+        {{ $employees->links('vendor.livewire.tailwind') }}
     </div>
 </x-page-layout>

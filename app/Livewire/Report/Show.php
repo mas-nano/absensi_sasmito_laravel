@@ -4,7 +4,7 @@ namespace App\Livewire\Report;
 
 use App\Models\Attendance;
 use App\Models\Leave;
-use App\Models\Overtime;
+use App\Models\MinusMultiply;
 use App\Models\OvertimeLimit;
 use App\Models\Project;
 use App\Models\Setting;
@@ -32,7 +32,8 @@ class Show extends Component
         $project->load('users.role');
         $this->project = $project;
         $this->dates = [
-            date('Y-m-01'), date('Y-m-t')
+            date('Y-m-01'),
+            date('Y-m-t')
         ];
         // $this->users = User::with(['profile', 'attendances' => function ($query) {
         //     $query->where('project_id', $this->project->id)
@@ -78,7 +79,7 @@ class Show extends Component
         $users = User::with(['profile', 'attendances' => function ($query) {
             $query->where('project_id', $this->project->id)
                 ->where('date', '>=', $this->dates ? Carbon::parse($this->dates[0])->setTimezone('Asia/Jakarta')->toDateString() : Carbon::now()->format('Y-m-01'))
-                ->where('date', '<=',  $this->dates ? Carbon::parse($this->dates[1])->setTimezone('Asia/Jakarta')->toDateString() : Carbon::now()->format('Y-m-t'));
+                ->where('date', '<=', $this->dates ? Carbon::parse($this->dates[1])->setTimezone('Asia/Jakarta')->toDateString() : Carbon::now()->format('Y-m-t'));
         }, 'leaves' => function ($query) {
             $query->where('project_id', $this->project->id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2);
         }])->where('project_id', $this->project->id)->where('role_id', '!=', 2)->get();
@@ -119,36 +120,66 @@ class Show extends Component
                                 Carbon::parse('00:00')
                             ) {
                                 if (
-                                    Carbon::parse($attendanceOut->created_at) <=
-                                    Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit)->addDay() ||
+                                    (Carbon::parse($attendanceOut->created_at) <=
+                                        Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit)->addDay() &&
+                                        collect(json_decode($overtimeLimit->days, true))->contains(Carbon::parse($value)->day)) ||
                                     $overtimeLimits->count() ==
                                     $key + 1
                                 ) {
                                     // $console->writeln('tengah-tengah ' . $o->multiply . ' ' . $o->id);
-                                    $multiply = $overtimeLimit->multiply;
+                                    $minusMultiplies = MinusMultiply::query()
+                                        ->where('project_id', $this->project->id)
+                                        ->where('minus_time_limit', '<', $attendanceIn->created_at->format('H:i'))
+                                        ->when($attendanceIn->created_at->format('H:i') > $timeLimit, function ($query) use ($timeLimit) {
+                                            return $query
+                                                ->where('minus_time_limit', '>=', $timeLimit);
+                                        })
+                                        ->orderBy('minus', 'desc')
+                                        ->first();
+                                    $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
                                     break;
                                 }
                             } else {
                                 if (
-                                    Carbon::parse($attendanceOut->created_at) <=
-                                    Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit) ||
+                                    (Carbon::parse($attendanceOut->created_at) <=
+                                        Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit) &&
+                                        collect(json_decode($overtimeLimit->days, true))->contains(Carbon::parse($value)->dayOfWeek)) ||
                                     $overtimeLimits->count() ==
                                     $key + 1
                                 ) {
                                     // $console->writeln('ga di tengah ' . $o->multiply . ' ' . $o->id);
-                                    $multiply = $overtimeLimit->multiply;
+                                    $minusMultiplies = MinusMultiply::query()
+                                        ->where('project_id', $this->project->id)
+                                        ->where('minus_time_limit', '<', $attendanceIn->created_at->format('H:i'))
+                                        ->when($attendanceIn->created_at->format('H:i') > $timeLimit, function ($query) use ($timeLimit) {
+                                            return $query
+                                                ->where('minus_time_limit', '>=', $timeLimit);
+                                        })
+                                        ->orderBy('minus', 'desc')
+                                        ->first();
+                                    $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
                                     break;
                                 }
                             }
                         } else {
                             if (
-                                Carbon::parse($attendanceOut->created_at) <=
-                                Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit) ||
+                                (Carbon::parse($attendanceOut->created_at) <=
+                                    Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit) &&
+                                    collect(json_decode($overtimeLimit->days, true))->contains(Carbon::parse($value)->day)) ||
                                 $overtimeLimits->count() ==
                                 $key + 1
                             ) {
                                 // $console->writeln('kur den timelimit ' . $o->multiply . ' ' . $o->id);
-                                $multiply = $overtimeLimit->multiply;
+                                $minusMultiplies = MinusMultiply::query()
+                                    ->where('project_id', $this->project->id)
+                                    ->where('minus_time_limit', '<', $attendanceIn->created_at->format('H:i'))
+                                    ->when($attendanceIn->created_at->format('H:i') > $timeLimit, function ($query) use ($timeLimit) {
+                                        return $query
+                                            ->where('minus_time_limit', '>=', $timeLimit);
+                                    })
+                                    ->orderBy('minus', 'desc')
+                                    ->first();
+                                $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
                                 break;
                             }
                         }

@@ -28,7 +28,9 @@ class TableOvertime extends Component
 
     public function render(): View
     {
-        return view('livewire.project.table-overtime');
+        return view('livewire.project.table-overtime', [
+            'daysText' => ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+        ]);
     }
 
     public function removeTimeLimit($id)

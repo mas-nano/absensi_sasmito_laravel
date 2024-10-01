@@ -44,7 +44,7 @@ class Edit extends Component
 
     public function mount(Project $project)
     {
-        $this->project = $project->load('users.profile', 'users.role');
+        $this->project = $project->load('users.profile', 'users.role', 'minusMultiplies');
         $this->currentPhoto = $project->photo;
         $this->lat = $project->lat;
         $this->lng = $project->lng;

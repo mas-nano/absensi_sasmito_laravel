@@ -111,6 +111,30 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\MinusMultiply
+ *
+ * @property int $id
+ * @property int $project_id
+ * @property string $minus_time_limit
+ * @property int $minus
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Project $project
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply query()
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereMinus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereMinusTimeLimit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereUpdatedAt($value)
+ */
+	class MinusMultiply extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Overtime
  *
  * @property int $id

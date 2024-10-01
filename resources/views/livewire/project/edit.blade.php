@@ -41,7 +41,7 @@
                         wire:model="photo" />
                 </label>
                 @error('photo')
-                <span class="text-xs text-red-500">{{ $message }}</span>
+                    <span class="text-xs text-red-500">{{ $message }}</span>
                 @enderror
                 <div class="mt-2">
                     <img src="{{ $photo ? $photo->temporaryUrl() : asset('storage/' . $project->photo) }}"
@@ -54,7 +54,7 @@
                     <input type="text" name="name" id="name" wire:model="name" placeholder="Nama Proyek"
                         class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
                     @error('name')
-                    <span class="text-xs text-red-500">{{ $message }}</span>
+                        <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="">
@@ -62,7 +62,7 @@
                     <input type="text" name="address" id="address" wire:model="address" placeholder="Alamat"
                         class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
                     @error('address')
-                    <span class="text-xs text-red-500">{{ $message }}</span>
+                        <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="">
@@ -71,7 +71,7 @@
                         placeholder="Jam Masuk"
                         class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] dark:[color-scheme:dark] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
                     @error('check_in_time')
-                    <span class="text-xs text-red-500">{{ $message }}</span>
+                        <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="">
@@ -80,7 +80,7 @@
                         placeholder="Jam Keluar"
                         class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] dark:[color-scheme:dark] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
                     @error('check_out_time')
-                    <span class="text-xs text-red-500">{{ $message }}</span>
+                        <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="">
@@ -88,7 +88,7 @@
                     <input type="text" name="lat" id="lat" x-model="lat" placeholder="Lattitude"
                         class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
                     @error('lat')
-                    <span class="text-xs text-red-500">{{ $message }}</span>
+                        <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="">
@@ -96,7 +96,7 @@
                     <input type="text" name="lng" id="lng" x-model="lng" placeholder="Longitude"
                         class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
                     @error('lng')
-                    <span class="text-xs text-red-500">{{ $message }}</span>
+                        <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="md:col-span-2" wire:ignore>
@@ -104,7 +104,7 @@
                         Proyek</label>
                     <div x-ref="map" class="h-96 w-full"></div>
                     @error('address')
-                    <span class="text-xs text-red-500">{{ $message }}</span>
+                        <span class="text-xs text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -112,61 +112,62 @@
     </form>
     @livewire('project.table-overtime', ['project_id' => $project->id, 'overtimeLimit' => $project->overtimeLimit])
     <livewire:project.table-employee :project="$project" />
+    @livewire('project.minus-multiply', ['project_id' => $project->id])
 </x-page-layout>
 
 @assets
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 @endassets
 
 
 @script
-<script>
-    Alpine.data('leaflet', () => ({
-        lat: $wire.entangle('lat'),
-        lng: $wire.entangle('lng'),
+    <script>
+        Alpine.data('leaflet', () => ({
+            lat: $wire.entangle('lat'),
+            lng: $wire.entangle('lng'),
 
-        init() {
-            var map = L.map(this.$refs.map).setView([0, 117.09], 4);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-                setZIndex: 2
-            }).addTo(map);
+            init() {
+                var map = L.map(this.$refs.map).setView([0, 117.09], 4);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                    setZIndex: 2
+                }).addTo(map);
 
-            var popup = L.popup();
+                var popup = L.popup();
 
-            var marker = null
-            if (this.lat != null && this.lng !== null) {
-                let latLng = L.latLngBounds([L.latLng(this.lat, this.lng)])
-                map.fitBounds(latLng)
-                marker = L.marker([this.lat, this.lng]).addTo(map)
-            }
-
-            map.on('click', (e) => {
-                this.lat = e.latlng.lat
-                this.lng = e.latlng.lng
-            })
-
-            this.$watch('lat', () => {
+                var marker = null
                 if (this.lat != null && this.lng !== null) {
-                    if (marker != null) {
-                        marker.remove()
-                    }
+                    let latLng = L.latLngBounds([L.latLng(this.lat, this.lng)])
+                    map.fitBounds(latLng)
                     marker = L.marker([this.lat, this.lng]).addTo(map)
                 }
-            })
-            this.$watch('lng', () => {
-                if (this.lat != null && this.lng !== null) {
-                    if (marker != null) {
-                        marker.remove()
+
+                map.on('click', (e) => {
+                    this.lat = e.latlng.lat
+                    this.lng = e.latlng.lng
+                })
+
+                this.$watch('lat', () => {
+                    if (this.lat != null && this.lng !== null) {
+                        if (marker != null) {
+                            marker.remove()
+                        }
+                        marker = L.marker([this.lat, this.lng]).addTo(map)
                     }
-                    marker = L.marker([this.lat, this.lng]).addTo(map)
-                }
-            })
-        },
-    }))
-</script>
+                })
+                this.$watch('lng', () => {
+                    if (this.lat != null && this.lng !== null) {
+                        if (marker != null) {
+                            marker.remove()
+                        }
+                        marker = L.marker([this.lat, this.lng]).addTo(map)
+                    }
+                })
+            },
+        }))
+    </script>
 @endscript

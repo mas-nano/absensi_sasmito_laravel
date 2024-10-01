@@ -30,4 +30,9 @@ class Project extends Model
     {
         return $this->hasMany(Overtime::class, 'project_id');
     }
+
+    public function minusMultiplies(): HasMany
+    {
+        return $this->hasMany(MinusMultiply::class, 'project_id');
+    }
 }
