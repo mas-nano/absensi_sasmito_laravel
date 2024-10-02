@@ -186,7 +186,7 @@ class Show extends Component
                     }
                     // }
                     if ($user->hasPermission('create-free-attendance')) {
-                        $multiply = $overtimeLimits->first()?->multiply ?? 0;
+                        $multiply = $overtimeLimits->where('multiply', '>', 0)->first()?->multiply ?? 0;
                     }
                 }
 
