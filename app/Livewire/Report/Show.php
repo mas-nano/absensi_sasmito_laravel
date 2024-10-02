@@ -191,7 +191,7 @@ class Show extends Component
                 }
 
                 if ($user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->first()) {
-                    $multiply = $overtimeLimits->first()?->multiply ?? 0;
+                    $multiply = $overtimeLimits->where('multiply', '>', 0)->first()?->multiply ?? 0;
                 }
 
                 $reports[] = [
