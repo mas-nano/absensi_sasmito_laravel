@@ -28,6 +28,7 @@ class Decision extends ModalComponent
         try {
             if ($this->type == 'approve') {
                 $this->leave->status = 2;
+                $this->leave->approved_by = auth()->user()->id;
             } else {
                 $this->leave->status = 3;
             }

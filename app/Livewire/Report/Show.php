@@ -12,6 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Livewire\Component;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Show extends Component
 {
@@ -122,7 +123,7 @@ class Show extends Component
                                 if (
                                     (Carbon::parse($attendanceOut->created_at) <=
                                         Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit)->addDay() &&
-                                        collect(json_decode($overtimeLimit->days, true))->contains(Carbon::parse($value)->day)) ||
+                                        collect(json_decode($overtimeLimit->days, true))->contains(Carbon::parse($value)->dayOfWeek)) ||
                                     $overtimeLimits->count() ==
                                     $key + 1
                                 ) {
@@ -165,7 +166,7 @@ class Show extends Component
                             if (
                                 (Carbon::parse($attendanceOut->created_at) <=
                                     Carbon::parse($value . ' ' . $overtimeLimit->check_out_time_limit) &&
-                                    collect(json_decode($overtimeLimit->days, true))->contains(Carbon::parse($value)->day)) ||
+                                    collect(json_decode($overtimeLimit->days, true))->contains(Carbon::parse($value)->dayOfWeek)) ||
                                 $overtimeLimits->count() ==
                                 $key + 1
                             ) {
@@ -190,7 +191,7 @@ class Show extends Component
                     }
                 }
 
-                if ($user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->first()) {
+                if ($user->leaves->where('start_date', '<=', $value)->where('to_date', '>=', $value)->where('type', 'Dinas Luar')->where('status', 2)->first()) {
                     $multiply = $overtimeLimits->where('multiply', '>', 0)->first()?->multiply ?? 0;
                 }
 
