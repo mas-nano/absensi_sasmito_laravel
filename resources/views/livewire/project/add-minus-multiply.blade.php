@@ -19,6 +19,17 @@
             <span class="text-xs text-red-500">{{ $message }}</span>
         @enderror
     </div>
+    <div class="">
+        <label class="text-sm block text-black mb-2">Hari</label>
+        <div class="grid grid-cols-4 gap-2">
+            @foreach ($daysText as $key => $value)
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="{{ $value }}" wire:model="days.{{ $key }}" />
+                    <label for="{{ $value }}" class="text-sm text-black">{{ $value }}</label>
+                </div>
+            @endforeach
+        </div>
+    </div>
     <div class="flex justify-end space-x-4">
         <button class="text-black" type="submit" wire:loading.attr="disabled">Simpan</button>
     </div>

@@ -22,6 +22,16 @@ class AddMinusMultiply extends ModalComponent
     #[Validate('required', 'numeric')]
     public $minus = 1;
 
+    public $days = [
+        0 => true,
+        1 => true,
+        2 => true,
+        3 => true,
+        4 => true,
+        5 => true,
+        6 => true,
+    ];
+
     public function mount($project_id)
     {
         $this->project_id = $project_id;
@@ -29,7 +39,9 @@ class AddMinusMultiply extends ModalComponent
 
     public function render()
     {
-        return view('livewire.project.add-minus-multiply');
+        return view('livewire.project.add-minus-multiply', [
+            'daysText' => ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+        ]);
     }
 
     public function save()
@@ -38,10 +50,17 @@ class AddMinusMultiply extends ModalComponent
 
         DB::beginTransaction();
         try {
+            $days = [];
+            foreach ($this->days as $key => $day) {
+                if ($day) {
+                    $days[] = $key;
+                }
+            }
             MinusMultiply::create([
                 'project_id' => $this->project_id,
                 'minus_time_limit' => $this->minus_time_limit,
-                'minus' => $this->minus
+                'minus' => $this->minus,
+                'days' => json_encode($days),
             ]);
             DB::commit();
             $this->dispatch('$refresh')->to(ProjectMinusMultiply::class);

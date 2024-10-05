@@ -20,7 +20,8 @@ class MinusMultiply extends Component
     {
         $project = Project::with('minusMultiplies')->find($this->project_id);
         return view('livewire.project.minus-multiply', [
-            'project' => $project
+            'project' => $project,
+            'daysText' => ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
         ]);
     }
 

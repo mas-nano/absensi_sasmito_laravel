@@ -14,6 +14,7 @@
                 <th class="py-3 font-normal ">No.</th>
                 <th class="py-3 font-normal ">Jam</th>
                 <th class="py-3 font-normal ">Pengurangan Uang Makan</th>
+                <th class="py-3 font-normal ">Hari</th>
                 @if (!request()->routeIs('project.show'))
                     <th class="py-3 font-normal ">Aksi</th>
                 @endif
@@ -25,6 +26,18 @@
                     <td class="py-3 font-normal">{{ $loop->iteration }}</td>
                     <td class="py-3 font-normal">{{ $item->minus_time_limit }}</td>
                     <td class="py-3 font-normal">{{ $item->minus }}</td>
+                    <td class="py-3 font-normal">
+                        @if (count(json_decode($item->days, true)) == 7)
+                            Setiap Hari
+                        @else
+                            @foreach (json_decode($item->days, true) as $day)
+                                {{ $daysText[$day] }}
+                                @if (!$loop->last)
+                                    ,
+                                @endif
+                            @endforeach
+                        @endif
+                    </td>
                     @if (!request()->routeIs('project.show'))
                         <td class="py-3">
                             <button wire:click="destroy('{{ $item->id }}')"><i
