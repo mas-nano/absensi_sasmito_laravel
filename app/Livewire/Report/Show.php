@@ -139,6 +139,7 @@ class Show extends Component
                                         ->orderBy('minus', 'desc')
                                         ->first();
                                     $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
+                                    if ($multiply < 0) $multiply = 0;
                                     break;
                                 }
                             } else {
@@ -161,6 +162,7 @@ class Show extends Component
                                         ->whereJsonContains('days', Carbon::parse($value)->dayOfWeek)
                                         ->first();
                                     $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
+                                    if ($multiply < 0) $multiply = 0;
                                     break;
                                 }
                             }
@@ -180,9 +182,11 @@ class Show extends Component
                                         return $query
                                             ->where('minus_time_limit', '>=', $timeLimit);
                                     })
+                                    ->whereJsonContains('days', Carbon::parse($value)->dayOfWeek)
                                     ->orderBy('minus', 'desc')
                                     ->first();
                                 $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
+                                if ($multiply < 0) $multiply = 0;
                                 break;
                             }
                         }
