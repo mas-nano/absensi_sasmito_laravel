@@ -27,7 +27,9 @@
                     <th class="py-3 px-2 font-normal text-nowrap ">Jenis Izin</th>
                     <th class="py-3 px-2 font-normal text-nowrap ">Tanggal</th>
                     <th class="py-3 px-2 font-normal text-nowrap ">Keterangan</th>
-                    <th class="py-3 px-2 font-normal text-nowrap ">Aksi</th>
+                    @if (Auth::user()->hasPermission('manage-leave'))
+                        <th class="py-3 px-2 font-normal text-nowrap ">Aksi</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -41,20 +43,22 @@
                             {{ \Carbon\Carbon::parse($item->to_date)->format('d/m/Y') }}
                         </td>
                         <td class="py-3 px-2 font-normal">{{ $item->reason }}</td>
-                        <td class="py-3 px-2 flex space-x-2">
-                            @if ($item->status == 2)
-                                <p class="bg-green-500 text-white px-2 py-1 rounded-sm font-normal">Disetujui</p>
-                            @elseif ($item->status == 3)
-                                <p class="bg-red-500 text-white px-2 py-1 rounded-sm font-normal">Ditolak</p>
-                            @else
-                                <button
-                                    wire:click="$dispatch('openModal', { component: 'leave.decision', arguments:{leave_id:{{ $item->id }}, type:'approve'}})"><i
-                                        class="ph ph-check-circle text-green-500 text-lg"></i></button>
-                                <button
-                                    wire:click="$dispatch('openModal', { component: 'leave.decision', arguments:{leave_id:{{ $item->id }}, type:'decline'}})"><i
-                                        class="ph ph-x-circle text-red-500 text-lg"></i></button>
-                            @endif
-                        </td>
+                        @if (Auth::user()->hasPermission('manage-leave'))
+                            <td class="py-3 px-2 flex space-x-2">
+                                @if ($item->status == 2)
+                                    <p class="bg-green-500 text-white px-2 py-1 rounded-sm font-normal">Disetujui</p>
+                                @elseif ($item->status == 3)
+                                    <p class="bg-red-500 text-white px-2 py-1 rounded-sm font-normal">Ditolak</p>
+                                @else
+                                    <button
+                                        wire:click="$dispatch('openModal', { component: 'leave.decision', arguments:{leave_id:{{ $item->id }}, type:'approve'}})"><i
+                                            class="ph ph-check-circle text-green-500 text-lg"></i></button>
+                                    <button
+                                        wire:click="$dispatch('openModal', { component: 'leave.decision', arguments:{leave_id:{{ $item->id }}, type:'decline'}})"><i
+                                            class="ph ph-x-circle text-red-500 text-lg"></i></button>
+                                @endif
+                            </td>
+                        @endif
                     </tr>
                 @empty
                     <tr class="text-black dark:text-white text-xs">
