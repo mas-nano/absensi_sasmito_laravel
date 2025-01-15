@@ -25,6 +25,6 @@ jobs:
       - name: Deploy Site
         run: |
           forge server:switch snowy-galaxy
-          forge deploy absensi-dev.mooo.com
+          forge deploy absensi-harian-dev.mooo.com
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
