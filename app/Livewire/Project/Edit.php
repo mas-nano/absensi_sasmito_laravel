@@ -40,6 +40,12 @@ class Edit extends Component
     #[Validate('nullable', as: 'Jam Keluar')]
     public $check_out_time;
 
+    #[Validate('nullable', as: 'Jam Mulai Toleransi Telat Setelah Lembur')]
+    public $start_tolerance_overtime;
+
+    #[Validate('nullable', as: 'Durasi Toleransi Telat Setelah Lembur')]
+    public $duration_tolerance_overtime;
+
     public $currentPhoto = null;
 
     public function mount(Project $project)
@@ -52,6 +58,8 @@ class Edit extends Component
         $this->address = $project->address;
         $this->check_in_time = $project->check_in_time;
         $this->check_out_time = $project->check_out_time;
+        $this->start_tolerance_overtime = $project->start_tolerance_overtime;
+        $this->duration_tolerance_overtime = $project->duration_tolerance_overtime;
     }
 
     public function render()
@@ -77,6 +85,8 @@ class Edit extends Component
         $this->project->lng = $this->lng;
         $this->project->check_in_time = $this->check_in_time;
         $this->project->check_out_time = $this->check_out_time;
+        $this->project->start_tolerance_overtime = $this->start_tolerance_overtime;
+        $this->project->duration_tolerance_overtime = $this->duration_tolerance_overtime;
         $this->project->save();
 
         Toaster::success('Proyek berhasil diubah');

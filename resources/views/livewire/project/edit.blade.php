@@ -84,6 +84,27 @@
                     @enderror
                 </div>
                 <div class="">
+                    <label for="start_tolerance_overtime" class="text-sm block dark:text-white text-black mb-2">Jam
+                        Mulai Toleransi Telat Setelah Lembur</label>
+                    <input type="time" name="start_tolerance_overtime" id="start_tolerance_overtime"
+                        wire:model="start_tolerance_overtime" placeholder="Jam Mulai Toleransi Telat Setelah Lembur"
+                        class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
+                    @error('start_tolerance_overtime')
+                        <span class="text-xs text-red-500">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="">
+                    <label for="duration_tolerance_overtime"
+                        class="text-sm block dark:text-white text-black mb-2">Durasi Perhitungan Setelah Jam
+                        Keluar</label>
+                    <input type="text" name="duration_tolerance_overtime" id="duration_tolerance_overtime"
+                        wire:model="duration_tolerance_overtime" placeholder="Durasi Perhitungan Setelah Jam Keluar"
+                        class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">
+                    @error('duration_tolerance_overtime')
+                        <span class="text-xs text-red-500">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="">
                     <label for="lat" class="text-sm block dark:text-white text-black mb-2">Lattitude</label>
                     <input type="text" name="lat" id="lat" x-model="lat" placeholder="Lattitude"
                         class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">

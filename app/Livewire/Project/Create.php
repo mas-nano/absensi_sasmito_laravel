@@ -35,6 +35,12 @@ class Create extends Component
     #[Validate('nullable', as: 'Jam Keluar')]
     public $check_out_time;
 
+    #[Validate('nullable', as: 'Jam Mulai Toleransi Telat Setelah Lembur')]
+    public $start_tolerance_overtime;
+
+    #[Validate('nullable', as: 'Durasi Toleransi Telat Setelah Lembur')]
+    public $duration_tolerance_overtime;
+
     public function render()
     {
         return view('livewire.project.create');
@@ -54,6 +60,8 @@ class Create extends Component
         $project->lng = $this->lng;
         $project->check_in_time = $this->check_in_time;
         $project->check_out_time = $this->check_out_time;
+        $project->start_tolerance_overtime = $this->start_tolerance_overtime;
+        $project->duration_tolerance_overtime = $this->duration_tolerance_overtime;
         $project->save();
 
         Toaster::success('Proyek berhasil dibuat');

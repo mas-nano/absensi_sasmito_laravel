@@ -138,6 +138,22 @@ class Show extends Component
                                         ->whereJsonContains('days', Carbon::parse($value)->dayOfWeek)
                                         ->orderBy('minus', 'desc')
                                         ->first();
+
+                                    // Ambil out dari hari sebelum date berjalan. Cek apakah out nya lebih dari jam 1.
+                                    // Jika iya, cek lagi apakah in pada date berjalan lebih dari out kemarin + 8 jam.
+                                    // Jika iya, minus multiply.
+                                    // 8 jam dan jam 1 ambil dari DB di tabel project
+                                    $attendanceOutYesterday = $user->attendances->where('date', Carbon::parse($value)->subDay()->toDateString())->where('type', 'out')->first();
+                                    if (
+                                        $this->project->start_tolerance_overtime !== null &&
+                                        $this->project->duration_tolerance_overtime !== null &&
+                                        $attendanceOutYesterday &&
+                                        $attendanceOutYesterday->created_at->format('H:i') > $this->project->start_tolerance_overtime
+                                    ) {
+                                        if (!Carbon::parse($attendanceIn->created_at)->gt(Carbon::parse($attendanceOutYesterday->created_at)->addHours($this->project->duration_tolerance_overtime))) {
+                                            $minusMultiplies = null;
+                                        }
+                                    }
                                     $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
                                     if ($multiply < 0) $multiply = 0;
                                     break;
@@ -158,9 +174,25 @@ class Show extends Component
                                             return $query
                                                 ->where('minus_time_limit', '>=', $timeLimit);
                                         })
-                                        ->orderBy('minus', 'desc')
                                         ->whereJsonContains('days', Carbon::parse($value)->dayOfWeek)
+                                        ->orderBy('minus', 'desc')
                                         ->first();
+
+                                    // Ambil out dari hari sebelum date berjalan. Cek apakah out nya lebih dari jam 1.
+                                    // Jika iya, cek lagi apakah in pada date berjalan lebih dari out kemarin + 8 jam.
+                                    // Jika iya, minus multiply.
+                                    // 8 jam dan jam 1 ambil dari DB di tabel project
+                                    $attendanceOutYesterday = $user->attendances->where('date', Carbon::parse($value)->subDay()->toDateString())->where('type', 'out')->first();
+                                    if (
+                                        $this->project->start_tolerance_overtime !== null &&
+                                        $this->project->duration_tolerance_overtime !== null &&
+                                        $attendanceOutYesterday &&
+                                        $attendanceOutYesterday->created_at->format('H:i') > $this->project->start_tolerance_overtime
+                                    ) {
+                                        if (!Carbon::parse($attendanceIn->created_at)->gt(Carbon::parse($attendanceOutYesterday->created_at)->addHours($this->project->duration_tolerance_overtime))) {
+                                            $minusMultiplies = null;
+                                        }
+                                    }
                                     $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
                                     if ($multiply < 0) $multiply = 0;
                                     break;
@@ -185,6 +217,22 @@ class Show extends Component
                                     ->whereJsonContains('days', Carbon::parse($value)->dayOfWeek)
                                     ->orderBy('minus', 'desc')
                                     ->first();
+
+                                // Ambil out dari hari sebelum date berjalan. Cek apakah out nya lebih dari jam 1.
+                                // Jika iya, cek lagi apakah in pada date berjalan lebih dari out kemarin + 8 jam.
+                                // Jika iya, minus multiply.
+                                // 8 jam dan jam 1 ambil dari DB di tabel project
+                                $attendanceOutYesterday = $user->attendances->where('date', Carbon::parse($value)->subDay()->toDateString())->where('type', 'out')->first();
+                                if (
+                                    $this->project->start_tolerance_overtime !== null &&
+                                    $this->project->duration_tolerance_overtime !== null &&
+                                    $attendanceOutYesterday &&
+                                    $attendanceOutYesterday->created_at->format('H:i') > $this->project->start_tolerance_overtime
+                                ) {
+                                    if (!Carbon::parse($attendanceIn->created_at)->gt(Carbon::parse($attendanceOutYesterday->created_at)->addHours($this->project->duration_tolerance_overtime))) {
+                                        $minusMultiplies = null;
+                                    }
+                                }
                                 $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
                                 if ($multiply < 0) $multiply = 0;
                                 break;

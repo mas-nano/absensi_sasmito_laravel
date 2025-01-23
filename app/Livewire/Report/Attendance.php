@@ -25,7 +25,8 @@ class Attendance extends Component
     {
         $this->project = $project;
         $this->dates = [
-            date('Y-m-01'), date('Y-m-t')
+            date('Y-m-01'),
+            date('Y-m-t')
         ];
     }
 
@@ -48,7 +49,7 @@ class Attendance extends Component
         }]);
 
         $listDates = array_map(
-            fn ($date) => $date->setTimezone('Asia/Jakarta')->toDateString(),
+            fn($date) => $date->setTimezone('Asia/Jakarta')->toDateString(),
             CarbonPeriod::create(
                 $this->dates[0],
                 $this->dates[1]
