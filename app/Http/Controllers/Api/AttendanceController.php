@@ -125,8 +125,14 @@ class AttendanceController extends Controller
             $lastAttendance = Attendance::where('user_id', $request->user()->id)->where('date', Carbon::now()->subDay()->toDateString())->latest()->first();
         }
 
-        if ($this->calculateDistance($validated['lat'], $validated['lng'], $project->lat, $project->lng) > 20) {
-            return $this->responseError('Lokasi terlalu jauh dengan ' . $project->name, 403, true);
+        $distance = $this->calculateDistance($validated['lat'], $validated['lng'], $project->lat, $project->lng);
+
+        if ($distance > 20) {
+            $selisih = $distance - 20;
+            $selisih = $selisih / 20;
+            $selisih = $selisih * 100;
+            $selisih = $selisih . '%';
+            return $this->responseError('Lokasi terlalu jauh dengan ' . $project->name . ' sejauh ' . $selisih . ' meter', 403, true);
         }
 
         $attendance = new Attendance();
