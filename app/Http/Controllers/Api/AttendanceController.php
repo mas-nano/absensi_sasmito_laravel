@@ -129,9 +129,6 @@ class AttendanceController extends Controller
 
         if ($distance > 20) {
             $selisih = $distance - 20;
-            $selisih = $selisih / 20;
-            $selisih = $selisih * 100;
-            $selisih = $selisih . '%';
             return $this->responseError('Lokasi terlalu jauh dengan ' . $project->name . ' sejauh ' . $selisih . ' meter', 403, true);
         }
 
