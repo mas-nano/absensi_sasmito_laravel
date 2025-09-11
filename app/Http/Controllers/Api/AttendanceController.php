@@ -127,8 +127,8 @@ class AttendanceController extends Controller
 
         $distance = $this->calculateDistance($validated['lat'], $validated['lng'], $project->lat, $project->lng);
 
-        if ($distance > 20) {
-            $selisih = $distance - 20;
+        if ($distance > 30) {
+            $selisih = $distance - 30;
             return $this->responseError('Lokasi terlalu jauh dengan ' . $project->name . ' sejauh ' . $selisih . ' meter', 403, true);
         }
 
