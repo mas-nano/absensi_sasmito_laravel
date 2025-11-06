@@ -12,7 +12,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Livewire\Component;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Show extends Component
 {
@@ -79,7 +78,7 @@ class Show extends Component
 
         $users = User::with(['profile', 'attendances' => function ($query) {
             $query->where('project_id', $this->project->id)
-                ->where('date', '>=', $this->dates ? Carbon::parse($this->dates[0])->setTimezone('Asia/Jakarta')->toDateString() : Carbon::now()->format('Y-m-01'))
+                ->where('date', '>=', $this->dates ? Carbon::parse($this->dates[0])->subDay()->setTimezone('Asia/Jakarta')->toDateString() : Carbon::now()->format('Y-m-01'))
                 ->where('date', '<=', $this->dates ? Carbon::parse($this->dates[1])->setTimezone('Asia/Jakarta')->toDateString() : Carbon::now()->format('Y-m-t'));
         }, 'leaves' => function ($query) {
             $query->where('project_id', $this->project->id)->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2);

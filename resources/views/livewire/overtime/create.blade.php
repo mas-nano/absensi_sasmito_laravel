@@ -58,11 +58,11 @@
                 @foreach ($users as $user)
                     @php
                         $name = [];
-                        if ($user->profile->first_title) {
+                        if ($user->profile?->first_title) {
                             $name[] = $user->profile->first_title;
                         }
                         $name[] = $user->name;
-                        if ($user->profile->last_title) {
+                        if ($user->profile?->last_title) {
                             $name[] = $user->profile->last_title;
                         }
                     @endphp

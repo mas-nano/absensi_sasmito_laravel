@@ -86,7 +86,7 @@ class Edit extends Component
         $this->project->check_in_time = $this->check_in_time;
         $this->project->check_out_time = $this->check_out_time;
         $this->project->start_tolerance_overtime = $this->start_tolerance_overtime;
-        $this->project->duration_tolerance_overtime = $this->duration_tolerance_overtime;
+        $this->project->duration_tolerance_overtime = filled($this->duration_tolerance_overtime) ? $this->duration_tolerance_overtime : null;
         $this->project->save();
 
         Toaster::success('Proyek berhasil diubah');
