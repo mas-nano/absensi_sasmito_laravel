@@ -42,7 +42,8 @@
 			#   header_up Host cdn.example.com
 			# }
 
-			reverse_proxy {$STORAGE_UPSTREAM}
+			rewrite * /absen{path}
+            reverse_proxy https://s3.absensi.ptsasmito.com
 		}
 
 		# Serve file statis yg memang ada, tapi sembunyikan yang sensitif
