@@ -44,7 +44,7 @@
                     <span class="text-xs text-red-500">{{ $message }}</span>
                 @enderror
                 @if (!$file && $oldFile)
-                    <a href="{{ asset('storage/' . $oldFile) }}"
+                    <a href="{{ Storage::url($oldFile) }}"
                         class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg">Lihat</a>
                 @endif
             </div>

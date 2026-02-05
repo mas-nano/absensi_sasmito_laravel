@@ -23,7 +23,7 @@
     </div>
     <div class="mt-5 w-full grid grid-cols-4 p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#F7F9FB] gap-6">
         <div class="">
-            <img src="{{ $profile->profile_picture ? asset('storage/' . $profile->profile_picture) : asset('assets/img/no_profile.jpeg') }}"
+            <img src="{{ $profile->profile_picture ? Storage::url($profile->profile_picture) : asset('assets/img/no_profile.jpeg') }}"
                 alt="" class="w-100 h-100 object-cover object-center">
         </div>
         <div class="col-span-3 grid md:grid-cols-2 grid-cols-1 gap-4">

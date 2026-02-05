@@ -67,8 +67,7 @@
                                 <td class="py-3 font-normal">{{ $item->reason }}</td>
                                 <td class="py-3 font-normal">{{ $item->type }}</td>
                                 <td class="py-3 font-normal">
-                                    <a href="{{ asset('storage/' . $item->photo) }}" target="_blank" noreferer
-                                        noopener>
+                                    <a href="{{ Storage::url($item->photo) }}" target="_blank" noreferer noopener>
                                         <i class="ph ph-eye text-xl text-black dark:text-white"></i>
                                     </a>
                                 </td>

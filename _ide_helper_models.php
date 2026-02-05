@@ -119,11 +119,13 @@ namespace App\Models{
  * @property int $minus
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property mixed $days
  * @property-read \App\Models\Project $project
  * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply query()
  * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereDays($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereMinus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MinusMultiply whereMinusTimeLimit($value)
@@ -168,12 +170,14 @@ namespace App\Models{
  * @property int $project_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property mixed $days
  * @property-read \App\Models\Project $project
  * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit query()
  * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereCheckOutTimeLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereDays($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereMultiply($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OvertimeLimit whereProjectId($value)
@@ -283,8 +287,12 @@ namespace App\Models{
  * @property string|null $check_out_time
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $start_tolerance_overtime
+ * @property int|null $duration_tolerance_overtime
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Leave> $leaves
  * @property-read int|null $leaves_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MinusMultiply> $minusMultiplies
+ * @property-read int|null $minus_multiplies_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OvertimeLimit> $overtimeLimit
  * @property-read int|null $overtime_limit_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Overtime> $overtimes
@@ -298,11 +306,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCheckInTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCheckOutTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereDurationToleranceOvertime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereLat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereLng($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereStartToleranceOvertime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUuid($value)
  */

@@ -31,7 +31,7 @@
                 <div class="p-6 rounded-2xl dark:bg-[#FFFFFF0D] bg-[#E5ECF680] grid grid-cols-5 gap-4"
                     wire:key="{{ $item->id }}">
                     <div class="col-span-2">
-                        <img src="{{ $item->photo != null ? asset('storage/' . $item->photo) : asset('assets/img/no_profile.jpeg') }}"
+                        <img src="{{ $item->photo != null ? Storage::url($item->photo) : asset('assets/img/no_profile.jpeg') }}"
                             class="w-full object-cover object-center h-full" alt="">
                     </div>
                     <div class="col-span-3 flex flex-col">

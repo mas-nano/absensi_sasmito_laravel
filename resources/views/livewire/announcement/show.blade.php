@@ -27,7 +27,7 @@
             <div class="">
                 <label class="text-sm block dark:text-white text-black mb-2">Lampiran</label>
                 @if ($announcement->attachment)
-                    <a href="{{ asset('storage/' . $announcement->attachment) }}"
+                    <a href="{{ Storage::url($announcement->attachment) }}"
                         class="py-1 px-2 bg-black dark:bg-[#C6C7F8] text-xs text-white dark:text-black rounded-lg">Lihat</a>
                 @endif
             </div>

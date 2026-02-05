@@ -44,8 +44,8 @@
                     <span class="text-xs text-red-500">{{ $message }}</span>
                 @enderror
                 <div class="mt-2">
-                    <img src="{{ $photo ? $photo->temporaryUrl() : asset('storage/' . $project->photo) }}"
-                        alt="" class="w-100 h-100 object-cover object-center">
+                    <img src="{{ $photo ? $photo->temporaryUrl() : Storage::url($project->photo) }}" alt=""
+                        class="w-100 h-100 object-cover object-center">
                 </div>
             </div>
             <div class="md:col-span-3 grid md:grid-cols-2 grid-cols-1 gap-4" x-data="leaflet">

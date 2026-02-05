@@ -1,0 +1,58 @@
+{
+	admin off
+	persist_config off
+	auto_https off
+
+	{$CADDY_GLOBAL_OPTIONS}
+
+	# dari DEBUG -> INFO biar log tidak terlalu ramai
+	# kalau masih ramai juga, ganti INFO jadi WARN
+	log {
+		format json
+		output stderr
+		level {$CADDY_LOG_LEVEL:ERROR}
+	}
+
+	frankenphp {
+		{$FRANKENPHP_CONFIG}
+	}
+}
+
+{$CADDY_EXTRA_CONFIG}
+
+:{$PORT:80} {
+  {{if .RAILPACK_PHP_ROOT_DIR}}
+    root * {{.RAILPACK_PHP_ROOT_DIR}}
+  {{else}}
+    root * /app
+  {{end}}
+
+	encode zstd br gzip
+
+	{$CADDY_SERVER_EXTRA_DIRECTIVES}
+
+	route {
+		# Forward semua /storage/<apa pun> ke upstream
+		# handle_path akan MENGHAPUS prefix "/storage" sebelum diteruskan.
+		handle_path /storage/* {
+			# OPTIONAL:
+			# reverse_proxy by default meneruskan header Host dari request asli,
+			# kalau upstream butuh Host tertentu, set manual seperti di bawah. :contentReference[oaicite:2]{index=2}
+			# reverse_proxy {$STORAGE_UPSTREAM} {
+			#   header_up Host cdn.example.com
+			# }
+
+			reverse_proxy {$STORAGE_UPSTREAM}
+		}
+
+		# Serve file statis yg memang ada, tapi sembunyikan yang sensitif
+		@static file
+		file_server @static {
+			hide .git
+			hide .env*
+		}
+
+		# Laravel/PHP (FrankenPHP shortcut)
+		php_server
+	}
+}

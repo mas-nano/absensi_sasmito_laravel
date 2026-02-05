@@ -27,7 +27,7 @@
             <div class="">
                 <label for="" class="block text-sm text-black dark:text-white">Foto Proyek</label>
                 <div class="mt-2">
-                    <img src="{{ asset('storage/' . $project->photo) }}" alt=""
+                    <img src="{{ Storage::url($project->photo) }}" alt=""
                         class="w-100 h-100 object-cover object-center">
                 </div>
             </div>
