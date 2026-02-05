@@ -153,7 +153,11 @@ class Show extends Component
                                             $minusMultiplies = null;
                                         }
                                     }
-                                    $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
+                                    $minus = 0;
+                                    if (Carbon::parse($value)->toDateString() != '2026-02-05') {
+                                        $minus = $minusMultiplies?->minus;
+                                    }
+                                    $multiply = $overtimeLimit->multiply - $minus;
                                     if ($multiply < 0) $multiply = 0;
                                     break;
                                 }
@@ -192,7 +196,11 @@ class Show extends Component
                                             $minusMultiplies = null;
                                         }
                                     }
-                                    $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
+                                    $minus = 0;
+                                    if (Carbon::parse($value)->toDateString() != '2026-02-05') {
+                                        $minus = $minusMultiplies?->minus;
+                                    }
+                                    $multiply = $overtimeLimit->multiply - $minus;
                                     if ($multiply < 0) $multiply = 0;
                                     break;
                                 }
@@ -232,7 +240,11 @@ class Show extends Component
                                         $minusMultiplies = null;
                                     }
                                 }
-                                $multiply = $overtimeLimit->multiply - $minusMultiplies?->minus;
+                                $minus = 0;
+                                if (Carbon::parse($value)->toDateString() != '2026-02-05') {
+                                    $minus = $minusMultiplies?->minus;
+                                }
+                                $multiply = $overtimeLimit->multiply - $minus;
                                 if ($multiply < 0) $multiply = 0;
                                 break;
                             }
