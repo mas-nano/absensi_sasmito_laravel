@@ -27,33 +27,28 @@
     root * /app
   {{end}}
 
-	encode zstd br gzip
+  encode zstd br gzip
 
-	{$CADDY_SERVER_EXTRA_DIRECTIVES}
+  {$CADDY_SERVER_EXTRA_DIRECTIVES}
 
-	route {
-		# Forward semua /storage/<apa pun> ke upstream
-		# handle_path akan MENGHAPUS prefix "/storage" sebelum diteruskan.
-		handle_path /storage/* {
-			# OPTIONAL:
-			# reverse_proxy by default meneruskan header Host dari request asli,
-			# kalau upstream butuh Host tertentu, set manual seperti di bawah. :contentReference[oaicite:2]{index=2}
-			# reverse_proxy {$STORAGE_UPSTREAM} {
-			#   header_up Host cdn.example.com
-			# }
+  route {
+    # /storage/... -> proxy ke s3.absensi... + prefix /absen/...
+    handle_path /storage* {
+      # setelah handle_path, {path} sudah TANPA prefix "/storage"
+      # contoh: /storage/a/b.jpg -> {path} = /a/b.jpg
+      rewrite * /absen{path}
 
-			rewrite * /absen{path}
-            reverse_proxy https://s3.absensi.ptsasmito.com
-		}
+      # optional untuk verifikasi request masuk proxy
+      header X-Storage-Proxy "1"
 
-		# Serve file statis yg memang ada, tapi sembunyikan yang sensitif
-		@static file
-		file_server @static {
-			hide .git
-			hide .env*
-		}
+      reverse_proxy https://s3.absensi.ptsasmito.com {
+        # biasanya S3-compatible butuh Host sesuai upstream
+        header_up Host s3.absensi.ptsasmito.com
+      }
+    }
 
-		# Laravel/PHP (FrankenPHP shortcut)
-		php_server
-	}
+    # sisanya ke Laravel
+    php_server
+  }
 }
+
