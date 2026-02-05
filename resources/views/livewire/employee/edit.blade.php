@@ -43,7 +43,7 @@
                     <span class="text-xs text-red-500">{{ $message }}</span>
                 @enderror
                 <div class="mt-2">
-                    <img src="{{ $photo == null ? Storage::url($currentPhoto) : $photo->temporaryUrl() }}"
+                    <img src="{{ $photo == null ? ($currentPhoto ? Storage::url($currentPhoto) : '') : $photo->temporaryUrl() }}"
                         alt="" class="w-100 h-100 object-cover object-center">
                 </div>
             </div>
