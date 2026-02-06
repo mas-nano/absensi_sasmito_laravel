@@ -8,10 +8,10 @@
 	# dari DEBUG -> INFO biar log tidak terlalu ramai
 	# kalau masih ramai juga, ganti INFO jadi WARN
 	log {
-		format json
-		output stderr
-		level {$CADDY_LOG_LEVEL:ERROR}
-	}
+    output stderr
+    format json
+    level INFO
+  }
 
 	frankenphp {
 		{$FRANKENPHP_CONFIG}
@@ -21,34 +21,33 @@
 {$CADDY_EXTRA_CONFIG}
 
 :{$PORT:80} {
-  {{if .RAILPACK_PHP_ROOT_DIR}}
-    root * {{.RAILPACK_PHP_ROOT_DIR}}
-  {{else}}
-    root * /app
-  {{end}}
-
+  root * /app/public
   encode zstd br gzip
 
-  {$CADDY_SERVER_EXTRA_DIRECTIVES}
-
   route {
-    # /storage/... -> proxy ke s3.absensi... + prefix /absen/...
     handle_path /storage* {
-      # setelah handle_path, {path} sudah TANPA prefix "/storage"
-      # contoh: /storage/a/b.jpg -> {path} = /a/b.jpg
       rewrite * /absen{path}
-
-      # optional untuk verifikasi request masuk proxy
       header X-Storage-Proxy "1"
-
       reverse_proxy https://s3.absensi.ptsasmito.com {
-        # biasanya S3-compatible butuh Host sesuai upstream
         header_up Host s3.absensi.ptsasmito.com
       }
     }
 
-    # sisanya ke Laravel
+    # BLOCK semua PHP kecuali index.php
+    @notIndexPhp {
+      path *.php
+      not path /index.php
+    }
+    respond @notIndexPhp 404
+
+    # BLOCK file sensitif / dotfiles
+    @forbidden {
+      path /.env* /.git/* /.ht* /php.ini* /composer.* /artisan
+    }
+    respond @forbidden 404
+
     php_server
   }
 }
+
 
