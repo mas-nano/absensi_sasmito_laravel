@@ -24,7 +24,9 @@
 
   route {
     handle_path /storage* {
-      @notRead { not method GET HEAD }
+      @notRead { 
+        not method GET HEAD
+      }
       respond @notRead 405
 
       rewrite * /absen{path}
