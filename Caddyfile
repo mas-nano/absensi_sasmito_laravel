@@ -1,21 +1,19 @@
 {
-	admin off
-	persist_config off
-	auto_https off
+  admin off
+  persist_config off
+  auto_https off
 
-	{$CADDY_GLOBAL_OPTIONS}
+  {$CADDY_GLOBAL_OPTIONS}
 
-	# dari DEBUG -> INFO biar log tidak terlalu ramai
-	# kalau masih ramai juga, ganti INFO jadi WARN
-	log {
+  log {
     output stderr
     format json
     level INFO
   }
 
-	frankenphp {
-		{$FRANKENPHP_CONFIG}
-	}
+  frankenphp {
+    {$FRANKENPHP_CONFIG}
+  }
 }
 
 {$CADDY_EXTRA_CONFIG}
@@ -26,6 +24,9 @@
 
   route {
     handle_path /storage* {
+      @notRead { not method GET HEAD }
+      respond @notRead 405
+
       rewrite * /absen{path}
       header X-Storage-Proxy "1"
       reverse_proxy https://s3.absensi.ptsasmito.com {
@@ -33,21 +34,19 @@
       }
     }
 
-    # BLOCK semua PHP kecuali index.php
-    @notIndexPhp {
-      path *.php
+    # Block semua script PHP-ish kecuali /index.php
+    @blockedScripts {
+      path_regexp blockedScripts (?i)\.(php|phtml|pht|phar|php[0-9])($|/)
       not path /index.php
     }
-    respond @notIndexPhp 404
+    respond @blockedScripts 404
 
-    # BLOCK file sensitif / dotfiles
+    # Block file sensitif / dotfiles
     @forbidden {
-      path /.env* /.git/* /.ht* /php.ini* /composer.* /artisan
+      path /.env* /.git/* /.ht* /.user.ini* /php.ini* /composer.* /artisan
     }
     respond @forbidden 404
 
     php_server
   }
 }
-
-
