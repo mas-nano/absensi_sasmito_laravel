@@ -16,7 +16,8 @@ class UserController extends Controller
     use UploadFile;
     public function index(): JsonResponse
     {
-        return $this->responseSuccessWithData();
+        $users = User::select(['id', 'name', 'email'])->get();
+        return $this->responseSuccessWithData('data user', $users);
     }
 
     public function updateMe(Request $request): JsonResponse
@@ -104,5 +105,10 @@ class UserController extends Controller
         }
         $profile->save();
         return $this->responseSuccessWithData('Profile updated', $path);
+    }
+
+    public function showPublic(User $user): JsonResponse
+    {
+        return $this->responseSuccessWithData('data user', $user);
     }
 }

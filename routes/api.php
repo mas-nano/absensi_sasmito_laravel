@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LeaveController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Middleware\InternalAppMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,16 @@ Route::prefix('/v1')->group(function () {
         Route::prefix('/announcement')->controller(AnnouncementController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{announcement}', 'show');
+        });
+    });
+
+    Route::middleware(['api', InternalAppMiddleware::class])->group(function () {
+        Route::prefix('/project/public')->controller(ProjectController::class)->group(function () {
+            Route::get('/', 'indexPublic');
+        });
+        Route::prefix('/users/public')->controller(UserController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{user}', 'showPublic');
         });
     });
 });

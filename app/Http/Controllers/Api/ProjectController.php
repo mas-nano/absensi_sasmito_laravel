@@ -33,6 +33,14 @@ class ProjectController extends Controller
         return $this->responseSuccessWithData('data project', $projects);
     }
 
+    public function indexPublic(): JsonResponse
+    {
+        $projects = Project::query()
+            ->select(['id', 'name'])
+            ->get();
+        return $this->responseSuccessWithData('data project', $projects);
+    }
+
     public function getUsers(Project $project, Request $request): JsonResponse
     {
         return $this->responseSuccessWithData('user data', ['users' => User::with(['profile', 'role', 'attendances' => function ($query) use ($request) {
@@ -85,10 +93,10 @@ class ProjectController extends Controller
                 $report->push([
                     'date' => $date,
                     'in' => $leave->type,
-                    'out' => $leave->type,
+                    'out' => $leave->reason,
                 ]);
 
-//                continue;
+                //                continue;
             } else {
                 $attendance = $user->attendances->where('date', $date);
                 $report->push([
@@ -97,7 +105,6 @@ class ProjectController extends Controller
                     'out' => $attendance->where('type', '=', 'out')->first()?->created_at->format('H:i'),
                 ]);
             }
-
         }
 
         $reportCount = [
