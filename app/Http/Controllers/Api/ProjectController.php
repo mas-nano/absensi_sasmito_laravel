@@ -79,6 +79,7 @@ class ProjectController extends Controller
             ", [$project->check_in_time])
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
             ->orderByDesc('total_early_minutes')
             ->first();
@@ -98,6 +99,7 @@ class ProjectController extends Controller
             ", [$project->check_in_time])
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
             ->orderByDesc('total_late_minutes_over_15')
             ->first();
@@ -118,6 +120,7 @@ class ProjectController extends Controller
             ->where('u.project_id', $project->id)
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
             ->orderByDesc('absent_days')
             ->first();
@@ -128,6 +131,7 @@ class ProjectController extends Controller
             ->join('users as u', 'u.id', '=', 'a.user_id')
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->where('a.project_id', $project->id)
             ->where('a.type', 'out')
             ->where('a.status', 'Pulang Cepat')
@@ -143,6 +147,7 @@ class ProjectController extends Controller
             ->where('l.project_id', $project->id)
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->where('l.status', 2)
             ->whereDate('l.start_date', '<=', $monthEnd)
             ->whereDate('l.to_date', '>=', $monthStart);
@@ -156,6 +161,7 @@ class ProjectController extends Controller
             ->whereIn('l.type', ['Perjalanan Dinas', 'Dinas Luar'])
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->selectRaw("
                 u.id as user_id,
                 u.name,
@@ -169,6 +175,7 @@ class ProjectController extends Controller
             ->whereIn('l.type', ['Izin Lainnya', 'Lainnya'])
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->selectRaw("
                 u.id as user_id,
                 u.name,
@@ -182,6 +189,7 @@ class ProjectController extends Controller
             ->where('l.type', 'Sakit')
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->selectRaw("
                 u.id as user_id,
                 u.name,
@@ -354,6 +362,7 @@ class ProjectController extends Controller
             ", [$user->project->check_in_time])
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
             ->orderByDesc('total_early_minutes')
             ->first();
@@ -373,6 +382,7 @@ class ProjectController extends Controller
             ", [$user->project->check_in_time])
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
             ->orderByDesc('total_late_minutes_over_15')
             ->first();
@@ -393,6 +403,7 @@ class ProjectController extends Controller
             ->where('u.project_id', $user->project_id)
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
             ->orderByDesc('absent_days')
             ->first();
@@ -403,6 +414,7 @@ class ProjectController extends Controller
             ->join('users as u', 'u.id', '=', 'a.user_id')
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->where('a.project_id', $user->project_id)
             ->where('a.type', 'out')
             ->where('a.status', 'Pulang Cepat')
@@ -418,6 +430,7 @@ class ProjectController extends Controller
             ->where('l.project_id', $user->project_id)
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->where('l.status', 2)
             ->whereDate('l.start_date', '<=', $monthEnd)
             ->whereDate('l.to_date', '>=', $monthStart);
@@ -431,6 +444,7 @@ class ProjectController extends Controller
             ->whereIn('l.type', ['Perjalanan Dinas', 'Dinas Luar'])
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->selectRaw("
                 u.id as user_id,
                 u.name,
@@ -444,6 +458,7 @@ class ProjectController extends Controller
             ->whereIn('l.type', ['Izin Lainnya', 'Lainnya'])
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->selectRaw("
                 u.id as user_id,
                 u.name,
@@ -457,6 +472,7 @@ class ProjectController extends Controller
             ->where('l.type', 'Sakit')
             ->where('u.role_id', '!=', 2)
             ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
             ->selectRaw("
                 u.id as user_id,
                 u.name,
