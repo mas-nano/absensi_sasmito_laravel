@@ -199,6 +199,40 @@ class ProjectController extends Controller
             ->orderByDesc('total_days')
             ->first();
 
+        $attendanceDateExpr = "COALESCE(a.date, (a.created_at AT TIME ZONE 'Asia/Jakarta')::date)";
+
+        // 1) jumlah absensi per hari per user (in/out digabung)
+        $dailyAttendanceCount = DB::table('attendances as a')
+            ->selectRaw("
+                a.user_id,
+                a.project_id,
+                $attendanceDateExpr AS work_date,
+                COUNT(*) AS total_absen_hari
+            ")
+            ->where('a.project_id', $project->id)
+            ->whereIn('a.type', ['in', 'out'])
+            ->whereRaw("$attendanceDateExpr >= ?", [$monthStart])
+            ->whereRaw("$attendanceDateExpr <  ?", [$monthEnd])
+            ->groupByRaw("a.user_id, a.project_id, $attendanceDateExpr");
+
+        // 2) hari yang cuma punya 1 absen = lupa absen
+        $winnerLupaAbsen = DB::query()
+            ->fromSub($dailyAttendanceCount, 'dac')
+            ->join('users as u', 'u.id', '=', 'dac.user_id')
+            ->where('u.role_id', '!=', 2)
+            ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
+            ->where('dac.total_absen_hari', 1)
+            ->selectRaw("
+                u.id as user_id,
+                u.name,
+                COUNT(*) AS total_lupa_absen_days
+            ")
+            ->groupBy('u.id', 'u.name')
+            ->orderByDesc('total_lupa_absen_days')
+            ->orderBy('u.name')
+            ->first();
+
         $predikat = [
             'paling_rajin' => $winnerRajin?->name,
             'sering_terlambat' => $winnerTerlambat?->name,
@@ -207,6 +241,7 @@ class ProjectController extends Controller
             'sering_dinas_luar' => $winnerDinasLuar?->name,
             'sering_izin' => $winnerIzin?->name,
             'sering_sakit' => $winnerSakit?->name,
+            'sering_lupa_absen' => $winnerLupaAbsen?->name,
         ];
 
         return $this->responseSuccessWithData('user data', [
@@ -482,6 +517,38 @@ class ProjectController extends Controller
             ->orderByDesc('total_days')
             ->first();
 
+        $attendanceDateExpr = "COALESCE(a.date, (a.created_at AT TIME ZONE 'Asia/Jakarta')::date)";
+
+        $dailyAttendanceCount = DB::table('attendances as a')
+            ->selectRaw("
+                a.user_id,
+                a.project_id,
+                $attendanceDateExpr AS work_date,
+                COUNT(*) AS total_absen_hari
+            ")
+            ->where('a.project_id', $user->project_id)
+            ->whereIn('a.type', ['in', 'out'])
+            ->whereRaw("$attendanceDateExpr >= ?", [$monthStart])
+            ->whereRaw("$attendanceDateExpr <  ?", [$monthEnd])
+            ->groupByRaw("a.user_id, a.project_id, $attendanceDateExpr");
+
+        $winnerLupaAbsen = DB::query()
+            ->fromSub($dailyAttendanceCount, 'dac')
+            ->join('users as u', 'u.id', '=', 'dac.user_id')
+            ->where('u.role_id', '!=', 2)
+            ->where('u.position_id', '!=', 9)
+            ->where('u.position_id', '!=', 10)
+            ->where('dac.total_absen_hari', 1)
+            ->selectRaw("
+                u.id as user_id,
+                u.name,
+                COUNT(*) AS total_lupa_absen_days
+            ")
+            ->groupBy('u.id', 'u.name')
+            ->orderByDesc('total_lupa_absen_days')
+            ->orderBy('u.name')
+            ->first();
+
         $predikat = [
             'paling_rajin' => $winnerRajin?->name,
             'sering_terlambat' => $winnerTerlambat?->name,
@@ -490,6 +557,7 @@ class ProjectController extends Controller
             'sering_dinas_luar' => $winnerDinasLuar?->name,
             'sering_izin' => $winnerIzin?->name,
             'sering_sakit' => $winnerSakit?->name,
+            'sering_lupa_absen' => $winnerLupaAbsen?->name,
         ];
 
         $user->setAttribute('predikat', $predikat);
