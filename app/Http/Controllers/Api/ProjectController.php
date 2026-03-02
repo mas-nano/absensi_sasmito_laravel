@@ -101,6 +101,14 @@ class ProjectController extends Controller
             ->where('u.position_id', '!=', 9)
             ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
+            ->havingRaw("
+                SUM(
+                    GREATEST(
+                        0,
+                        EXTRACT(EPOCH FROM (check_in_at - (work_date::timestamp + (?::time)))) / 60.0
+                    )
+                ) > 0
+            ", [$project->check_in_time])
             ->orderByDesc('total_late_minutes_over_15')
             ->first();
 
@@ -122,6 +130,7 @@ class ProjectController extends Controller
             ->where('u.position_id', '!=', 9)
             ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
+            ->havingRaw("(? - COUNT(di.work_date)) > 0", [$expectedWorkdays])
             ->orderByDesc('absent_days')
             ->first();
 
@@ -229,6 +238,7 @@ class ProjectController extends Controller
                 COUNT(*) AS total_lupa_absen_days
             ")
             ->groupBy('u.id', 'u.name')
+            ->havingRaw("COUNT(*) > 0")
             ->orderByDesc('total_lupa_absen_days')
             ->orderBy('u.name')
             ->first();
@@ -419,6 +429,14 @@ class ProjectController extends Controller
             ->where('u.position_id', '!=', 9)
             ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
+            ->havingRaw("
+                SUM(
+                    GREATEST(
+                        0,
+                        EXTRACT(EPOCH FROM (check_in_at - (work_date::timestamp + (?::time)))) / 60.0
+                    )
+                ) > 0
+            ", [$user->project->check_in_time])
             ->orderByDesc('total_late_minutes_over_15')
             ->first();
 
@@ -440,6 +458,7 @@ class ProjectController extends Controller
             ->where('u.position_id', '!=', 9)
             ->where('u.position_id', '!=', 10)
             ->groupBy('u.id')
+            ->havingRaw("(? - COUNT(di.work_date)) > 0", [$expectedWorkdays])
             ->orderByDesc('absent_days')
             ->first();
 
@@ -546,6 +565,7 @@ class ProjectController extends Controller
             ")
             ->groupBy('u.id', 'u.name')
             ->orderByDesc('total_lupa_absen_days')
+            ->havingRaw("COUNT(*) > 0")
             ->orderBy('u.name')
             ->first();
 
