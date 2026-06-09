@@ -1,6 +1,10 @@
 <?php
 
 use App\Livewire\Dashboard;
+use App\Livewire\Employee\Create;
+use App\Livewire\Employee\Edit;
+use App\Livewire\Employee\Index;
+use App\Livewire\Employee\Show;
 use App\Livewire\Login;
 use Illuminate\Support\Facades\Route;
 
@@ -15,16 +19,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/debug-glitchtip', function () {
+    throw new Exception('Test GlitchTip error!');
+});
+
 Route::middleware('guest:web')->group(function () {
     Route::get('/', Login::class)->name('login');
 });
 Route::middleware('auth:web')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::prefix('/employee')->name('employee.')->group(function () {
-        Route::get('/', App\Livewire\Employee\Index::class)->name('index');
-        Route::get('/create', App\Livewire\Employee\Create::class)->name('create');
-        Route::get('/{profile:uuid}', App\Livewire\Employee\Show::class)->name('show');
-        Route::get('/{profile:uuid}/edit', App\Livewire\Employee\Edit::class)->name('edit');
+        Route::get('/', Index::class)->name('index');
+        Route::get('/create', Create::class)->name('create');
+        Route::get('/{profile:uuid}', Show::class)->name('show');
+        Route::get('/{profile:uuid}/edit', Edit::class)->name('edit');
     });
     Route::prefix('/project')->name('project.')->group(function () {
         Route::get('/', App\Livewire\Project\Index::class)->name('index');
