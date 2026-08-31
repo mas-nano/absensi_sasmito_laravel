@@ -41,11 +41,14 @@ class AttendanceController extends Controller
     {
         $data = collect();
         $timeLimit = Setting::where('field', 'time')->first()->value ?? '00:00';
-        $now = Carbon::now();
         $project = Project::find($request->user()->project_id);
+        $now = CarbonImmutable::now($project->timezone);
+        $checkInTime = $project->check_in_time ? $now->setTimeFromTimeString($project->check_in_time) : null;
+        $checkOutTime = $project->check_out_time ? $now->setTimeFromTimeString($project->check_out_time) : null;
+        $timeLimitCarbon = $now->setTimeFromTimeString($timeLimit);
         $attendance = null;
-        // $attendance = Attendance::where('user_id', $request->user()->id)->where('date', $now->toDateString())->latest()->first();
-        if ($now->gte(Carbon::parse($timeLimit))) {
+
+        if ($now->gte($timeLimitCarbon)) {
             $attendance = Attendance::query()
                 ->where('user_id', $request->user()->id)
                 ->where('date', $now->toDateString())
@@ -54,12 +57,19 @@ class AttendanceController extends Controller
         } else {
             $attendance = Attendance::query()
                 ->where('user_id', $request->user()->id)
-                ->where('date', Carbon::now()->subDay()->toDateString())
+                ->where('date', $now->subDay()->toDateString())
                 ->latest()
                 ->first();
         }
 
-        $todayLeave = Leave::where('user_id', $request->user()->id)->where('start_date', '<=', $now->toDateString())->where('to_date', '>=', $now->toDateString())->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])->where('status', 2)->latest()->first();
+        $todayLeave = Leave::where('user_id', $request->user()->id)
+            ->where('start_date', '<=', $now->toDateString())
+            ->where('to_date', '>=', $now->toDateString())
+            ->whereIn('type', ['Dinas Luar', 'Sakit', 'Lainnya'])
+            ->where('status', 2)
+            ->latest()
+            ->first();
+
         if ($todayLeave) {
             $data->put('canCheckIn', false);
             $data->put('canCheckOut', false);
@@ -73,8 +83,8 @@ class AttendanceController extends Controller
         }
 
         if ($attendance == null) {
-            if ($project->check_in_time && $project->check_out_time && !Auth::user()->hasPermission('create-free-attendance')) {
-                if ($now->gte(Carbon::parse($timeLimit)) && $now->lte(Carbon::parse($project->check_out_time))) {
+            if ($checkInTime && $checkOutTime && !Auth::user()->hasPermission('create-free-attendance')) {
+                if ($now->gte($timeLimitCarbon) && $now->lte($checkOutTime)) {
                     $data->put('canCheckIn', true);
                     $data->put('canCheckOut', false);
                 } else {
