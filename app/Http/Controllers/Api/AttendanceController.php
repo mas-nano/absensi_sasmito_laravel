@@ -115,14 +115,25 @@ class AttendanceController extends Controller
         $validated = $validator->validated();
 
         $project = Project::find(Auth::user()->project_id);
-        $now = CarbonImmutable::now();
+        $now = CarbonImmutable::now($project->timezone);
+
         $timeLimit = Setting::where('field', 'time')->first()->value ?? '00:00';
         $late = Setting::where('field', 'late')->first()->value ?? 0;
 
-        if ($now->gte(Carbon::parse($timeLimit))) {
-            $lastAttendance = Attendance::where('user_id', $request->user()->id)->where('date', Carbon::now()->toDateString())->latest()->first();
+        // semua jam referensi dibangun dari $now, biar timezone & tanggal konsisten
+        $timeLimitCarbon = $now->setTimeFromTimeString($timeLimit);
+        $checkInTime = $project->check_in_time ? $now->setTimeFromTimeString($project->check_in_time) : null;
+        $checkOutTime = $project->check_out_time ? $now->setTimeFromTimeString($project->check_out_time) : null;
+        $midnight = $now->setTime(0, 0, 0);
+
+        if ($now->gte($timeLimitCarbon)) {
+            $lastAttendance = Attendance::where('user_id', $request->user()->id)
+                ->where('date', $now->toDateString())
+                ->latest()->first();
         } else {
-            $lastAttendance = Attendance::where('user_id', $request->user()->id)->where('date', Carbon::now()->subDay()->toDateString())->latest()->first();
+            $lastAttendance = Attendance::where('user_id', $request->user()->id)
+                ->where('date', $now->subDay()->toDateString())
+                ->latest()->first();
         }
 
         $distance = $this->calculateDistance($validated['lat'], $validated['lng'], $project->lat, $project->lng);
@@ -135,15 +146,16 @@ class AttendanceController extends Controller
         $attendance = new Attendance();
         $attendance->lng = $validated['lng'];
         $attendance->lat = $validated['lat'];
+
         if ($lastAttendance == null) {
             if ($project->check_in_time && $project->check_out_time && !Auth::user()->hasPermission('create-free-attendance')) {
-                if ($now->gte(Carbon::parse($timeLimit)) && $now->lte(Carbon::parse($project->check_out_time))) {
-                    if ($now->gte(Carbon::parse($project->check_in_time)->addMinutes($late)) && $validated['reason'] == null) {
+                if ($now->gte($timeLimitCarbon) && $now->lte($checkOutTime)) {
+                    if ($now->gte($checkInTime->addMinutes($late)) && $validated['reason'] == null) {
                         return $this->responseError('Anda Terlambat. Isi Alasan', 403);
                     } else {
                         $attendance->date = $now->toDateString();
-                        if ($project->check_out_time < $timeLimit && $now->gt(Carbon::parse($timeLimit))) {
-                            $attendance->date = Carbon::now()->addDay()->toDateString();
+                        if ($project->check_out_time < $timeLimit && $now->gt($timeLimitCarbon)) {
+                            $attendance->date = $now->addDay()->toDateString();
                         }
                         $attendance->type = 'in';
                         if ($validated['reason'] != null) {
@@ -166,8 +178,8 @@ class AttendanceController extends Controller
                         return $this->responseError('Anda tidak absen masuk. Isi Alasan', 403);
                     }
                     $attendance->date = $now->toDateString();
-                    if ($project->check_in_time > $timeLimit && $now->lt(Carbon::parse($timeLimit))) {
-                        $attendance->date = Carbon::now()->subDay()->toDateString();
+                    if ($project->check_in_time > $timeLimit && $now->lt($timeLimitCarbon)) {
+                        $attendance->date = $now->subDay()->toDateString();
                     }
                     $leave = new Leave();
                     $leave->start_date = $now->toDateString();
@@ -182,10 +194,10 @@ class AttendanceController extends Controller
                     $attendance->status = 'Tepat Waktu';
                 }
             } else {
-                if (Carbon::parse($timeLimit) > Carbon::now() && Carbon::parse('00:00') <= Carbon::now()) {
-                    $attendance->date = Carbon::now()->subDay()->toDateString();
+                if ($timeLimitCarbon > $now && $midnight <= $now) {
+                    $attendance->date = $now->subDay()->toDateString();
                 } else {
-                    $attendance->date = Carbon::now()->toDateString();
+                    $attendance->date = $now->toDateString();
                 }
                 $attendance->type = 'in';
                 $attendance->status = 'Tepat Waktu';
@@ -193,12 +205,12 @@ class AttendanceController extends Controller
         } else {
             if ($lastAttendance->type == 'in') {
                 if ($project->check_out_time && !Auth::user()->hasPermission('create-free-attendance')) {
-                    if ($now->gt(Carbon::parse($timeLimit)) && $now->lt(Carbon::parse($project->check_out_time)) && $validated['reason'] == null) {
+                    if ($now->gt($timeLimitCarbon) && $now->lt($checkOutTime) && $validated['reason'] == null) {
                         return $this->responseError('Anda Pulang Cepat. Isi Alasan', 403);
                     } else {
                         $attendance->date = $now->toDateString();
-                        if ($project->check_in_time > $timeLimit && $now->lt(Carbon::parse($timeLimit))) {
-                            $attendance->date = Carbon::now()->subDay()->toDateString();
+                        if ($project->check_in_time > $timeLimit && $now->lt($timeLimitCarbon)) {
+                            $attendance->date = $now->subDay()->toDateString();
                         }
                         $attendance->type = 'out';
                         if ($validated['reason'] != null) {
@@ -217,10 +229,10 @@ class AttendanceController extends Controller
                         }
                     }
                 } else {
-                    if (Carbon::parse($timeLimit) > Carbon::now() && Carbon::parse('00:00') <= Carbon::now()) {
-                        $attendance->date = Carbon::now()->subDay()->toDateString();
+                    if ($timeLimitCarbon > $now && $midnight <= $now) {
+                        $attendance->date = $now->subDay()->toDateString();
                     } else {
-                        $attendance->date = Carbon::now()->toDateString();
+                        $attendance->date = $now->toDateString();
                     }
                     $attendance->type = 'out';
                     $attendance->status = 'Tepat Waktu';

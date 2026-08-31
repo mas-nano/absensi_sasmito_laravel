@@ -105,6 +105,21 @@
                     @enderror
                 </div>
                 <div class="">
+                    <label for="timezone" class="text-sm block dark:text-white text-black mb-2">
+                        Zona Waktu Proyek
+                    </label>
+                    <select class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black" name="timezone" id="timezone"
+                            wire:model="timezone">
+                        <option value="" disabled selected>Pilih Zona Waktu Proyek</option>
+                        <option value="Asia/Jakarta">WIB</option>
+                        <option value="Asia/Makassar">WITA</option>
+                        <option value="Asia/Jayapura">WIT</option>
+                    </select>
+                    @error('timezone')
+                    <span class="text-xs text-red-500">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="">
                     <label for="lat" class="text-sm block dark:text-white text-black mb-2">Lattitude</label>
                     <input type="text" name="lat" id="lat" x-model="lat" placeholder="Lattitude"
                         class="w-full px-3 py-2 border rounded-md dark:border-[#FFFFFF1A] border-[#1C1C1C1A] dark:bg-[#1C1C1CCC] dark:text-white text-black">

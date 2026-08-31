@@ -35,6 +35,9 @@ class Create extends Component
     #[Validate('nullable', as: 'Jam Keluar')]
     public $check_out_time;
 
+    #[Validate('required', as: 'Zona Waktu Proyek')]
+    public $timezone;
+
     #[Validate('nullable', as: 'Jam Mulai Toleransi Telat Setelah Lembur')]
     public $start_tolerance_overtime;
 
@@ -62,6 +65,7 @@ class Create extends Component
         $project->check_out_time = $this->check_out_time;
         $project->start_tolerance_overtime = $this->start_tolerance_overtime;
         $project->duration_tolerance_overtime = $this->duration_tolerance_overtime;
+        $project->timezone = $this->timezone;
         $project->save();
 
         Toaster::success('Proyek berhasil dibuat');

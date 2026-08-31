@@ -34,6 +34,9 @@ class Edit extends Component
     #[Validate('required', as: 'Alamat')]
     public $address;
 
+    #[Validate('required', as: 'Zona Waktu Proyek')]
+    public $timezone;
+
     #[Validate('nullable', as: 'Jam Masuk')]
     public $check_in_time;
 
@@ -58,6 +61,7 @@ class Edit extends Component
         $this->address = $project->address;
         $this->check_in_time = $project->check_in_time;
         $this->check_out_time = $project->check_out_time;
+        $this->timezone = $project->timezone;
         $this->start_tolerance_overtime = $project->start_tolerance_overtime;
         $this->duration_tolerance_overtime = $project->duration_tolerance_overtime;
     }
@@ -86,6 +90,7 @@ class Edit extends Component
         $this->project->check_in_time = $this->check_in_time;
         $this->project->check_out_time = $this->check_out_time;
         $this->project->start_tolerance_overtime = $this->start_tolerance_overtime;
+        $this->project->timezone = $this->timezone;
         $this->project->duration_tolerance_overtime = filled($this->duration_tolerance_overtime) ? $this->duration_tolerance_overtime : null;
         $this->project->save();
 
